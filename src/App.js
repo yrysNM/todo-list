@@ -42,17 +42,16 @@ function App() {
   // const [items, setItems] = useState(data);
 
   
-  const[items, setItems] = useState(JSON.parse(localStorage.getItem('is-open')));
+  const[items, setItems] = useState(JSON.parse(localStorage.getItem('items')));
   
   useEffect(() => {
-    localStorage.setItem('is-open', JSON.stringify(items));
+    localStorage.setItem('items', JSON.stringify(items));
   }, [items]);
 
 
 
   const[filterType, setFilterType] = useState("all");
 
-  const[searchTerm, setSearchTerm] = useState("");
   const[searchResults, setSearchResults] = useState([]);
 
   const heandleToDoChange = (e) => {
@@ -68,6 +67,7 @@ function App() {
       const newItem = {key: uuidv4(), label: itemToDo};
       
       setItems((prevElement) => [newItem, ...prevElement]);
+      setSearchResults((prevElement) => [newItem, ...prevElement]);
     }
 
 
@@ -84,6 +84,14 @@ function App() {
           }else return  item;
         })
       );
+      setSearchResults((prevItems) =>  
+      
+        prevItems.map((item) => {
+          if(item.key === key) {
+            return {...item, done: !item.done};
+          }else return  item;
+        })
+      );
   };
 
   const handleFilterChange = (type) => {
@@ -91,8 +99,14 @@ function App() {
   }
   
   const changeColorWarning = ({key}) => {
-    console.log(key);
+    // console.log(key);
     setItems((prevItems) => 
+    prevItems.map((item)=> {
+      if(item.key === key) {
+        return {...item, chColor: !item.chColor}; 
+      }else return item;
+    }));
+    setSearchResults((prevItems) => 
     prevItems.map((item)=> {
       if(item.key === key) {
         return {...item, chColor: !item.chColor}; 
@@ -103,18 +117,19 @@ function App() {
   const handleDelete = ({key}) => {
   
       setItems((prevItems) => prevItems.filter((item) => item.key !== key));
+      setSearchResults((prevItems) => prevItems.filter((item) => item.key !== key));
   }
 
   const handleSearch = (e) => {
     const value = e.target.value; 
 
-    setFilterType("search");
-
+    
     const todos = items.filter(todo => {
       return todo.label.indexOf(value) > -1; 
     })
-
+    
     setSearchResults(todos);
+    setFilterType("search");
   };
 
   const moreToDo= items.filter((item) => !item.done).length; 
@@ -123,8 +138,8 @@ function App() {
 
   const filteredArray =
   filterType === "search" ? searchResults : 
-  filterType === "all"    ? items         : filterType === "done"
-      ? items.filter((item) => item.done) : items.filter((item) => !item.done);
+  filterType === "all"    ? items         : 
+  filterType === "done"   ? items.filter((item) => item.done) : items.filter((item) => !item.done);
 
 
   return (
@@ -197,6 +212,7 @@ function App() {
       </ul>
 
       <div className="item-add-form d-flex">
+        
         <input
           value={itemToDo}
           type="text"
@@ -204,7 +220,7 @@ function App() {
           placeholder="What needs to be done"
           onChange = {heandleToDoChange}
         />
-        <button onClick={handleAddItem} className="btn btn-outline-secondary">Add item</button>
+        <button type="submit" onClick={handleAddItem} className="btn btn-outline-secondary">Add item</button>
       </div>
     </div>
   );
