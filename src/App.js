@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {v4 as uuidv4} from "uuid";
 
@@ -23,8 +23,7 @@ const buttons = [
 
 function App() {
 
-  let [itemToDo, setItemToDo] = useState("");
-  const [items, setItems] = useState([
+  let data = [
     {
       key: 1,
       label: "Have fun",
@@ -37,25 +36,48 @@ function App() {
       key: 3,
       label: "Generate Value",
     }
-  ]);
+  ];
+
+  let [itemToDo, setItemToDo] = useState("");
+  // const [items, setItems] = useState(data);
+
+  
+  const[items, setItems] = useState(JSON.parse(localStorage.getItem('is-open')));
+  
+  useEffect(() => {
+    localStorage.setItem('is-open', JSON.stringify(items));
+  }, [items]);
+
+
 
   const[filterType, setFilterType] = useState("all");
 
-  // const[changeBtn, setChangeBtn] = useState(false);
+  const[searchTerm, setSearchTerm] = useState("");
+  const[searchResults, setSearchResults] = useState([]);
 
   const heandleToDoChange = (e) => {
     setItemToDo(e.target.value);
   };
 
-  const handleAddItem = () => {
-    const newItem = {key: uuidv4(), label: itemToDo}; 
 
-    setItems((prevElement) => [newItem, ...prevElement]);
+
+  const handleAddItem = (e) => {
+
+    if(itemToDo !== "") {
+      
+      const newItem = {key: uuidv4(), label: itemToDo};
+      
+      setItems((prevElement) => [newItem, ...prevElement]);
+    }
+
+
+
     setItemToDo("");
   };
 
   const handleItemDone = ({key}) => {
       setItems((prevItems) =>  
+      
         prevItems.map((item) => {
           if(item.key === key) {
             return {...item, done: !item.done};
@@ -68,27 +90,42 @@ function App() {
     setFilterType(type);
   }
   
-  const handleChangeColor = ({key}) => {
-    setItems((items) => 
-      items.map((item) => {
-        if(item.key === key) {
-          return {...item, btnColor: !item.btnColor}; 
-
-        }else return item;
-      })
-    ); 
+  const changeColorWarning = ({key}) => {
+    console.log(key);
+    setItems((prevItems) => 
+    prevItems.map((item)=> {
+      if(item.key === key) {
+        return {...item, chColor: !item.chColor}; 
+      }else return item;
+    }));
   }
+
+  const handleDelete = ({key}) => {
+  
+      setItems((prevItems) => prevItems.filter((item) => item.key !== key));
+  }
+
+  const handleSearch = (e) => {
+    const value = e.target.value; 
+
+    setFilterType("search");
+
+    const todos = items.filter(todo => {
+      return todo.label.indexOf(value) > -1; 
+    })
+
+    setSearchResults(todos);
+  };
 
   const moreToDo= items.filter((item) => !item.done).length; 
 
   const doneToDo = items.length - moreToDo; 
 
   const filteredArray =
-  filterType === "all"
-    ? items
-    : filterType === "done"
-    ? items.filter((item) => item.done)
-    : items.filter((item) => !item.done);
+  filterType === "search" ? searchResults : 
+  filterType === "all"    ? items         : filterType === "done"
+      ? items.filter((item) => item.done) : items.filter((item) => !item.done);
+
 
   return (
     <div className="todo-app">
@@ -100,11 +137,14 @@ function App() {
 
       <div className="top-panel d-flex">
         {/* Search-panel */}
-        <input
+      
+        <input    
           type="text"
           className="form-control search-input"
           placeholder="type to search"
+          onChange={(e) => handleSearch(e)}
         />
+       
         {/* Item-status-filter */}
         {buttons.map((btn, index) => {
           return (
@@ -126,30 +166,34 @@ function App() {
         {filteredArray.length > 0 && 
         filteredArray.map((item) => {
           return (
-            <li className="list-group-item" key={item.key}>
-              <span  className={`todo-list-item ${(item.done) ? " done" : " "}`}>
-                <span className="todo-list-item-label"onClick={() => handleItemDone(item)}>{item.label}</span>
 
-                <button
-                  type="button"
-                  className="btn btn-outline-success btn-sm float-right"
-                >
-                  <i className="fa fa-exclamation" />
-                </button>
-
-                <button
-                  type="button"
-                  className= {"btn btn-outline-danger btn-sm float-right" + (item.btnColor) ? " text-warning" : ""}
-                  onClick={handleChangeColor(item.key)}
-                >
-                  <i className="fa fa-trash-o" />
-                </button>
-              </span>
-            </li>
+              <li className="list-group-item" key={item.key}>
+                <span  className={`todo-list-item ${(item.done === true) ? " done" : " "}`}>
+                  <span className={`todo-list-item-label  ${(item.chColor === true) ? " text-warning" : ""}`}
+                    onClick={() => handleItemDone(item)}>{item.label}</span>
+  
+                  <button
+                    type="button"
+                    className={`btn btn-outline-success btn-sm float-right`}
+                    onClick={() => changeColorWarning(item)}
+                  >
+                    <i className="fa fa-exclamation" />
+                  </button>
+  
+                  <button
+                    type="button"
+                    className= {`btn btn-outline-danger btn-sm float-right`}
+                    onClick={() => handleDelete(item)}
+                  >
+                    <i className="fa fa-trash-o" />
+                  </button>
+                </span>
+              </li>
 
           );
         })}
 
+       
       </ul>
 
       <div className="item-add-form d-flex">
