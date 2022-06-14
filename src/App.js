@@ -42,7 +42,7 @@ function App() {
   // const [items, setItems] = useState(data);
 
   
-  const[items, setItems] = useState(JSON.parse(localStorage.getItem('items')));
+  const[items, setItems] = useState(JSON.parse(localStorage.getItem('items')) || data);
   
   useEffect(() => {
     localStorage.setItem('items', JSON.stringify(items));
