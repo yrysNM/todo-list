@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import {v4 as uuidv4} from "uuid";
+import { TodoistApi } from "@doist/todoist-api-typescript";
 
 import "./App.css";
 
@@ -20,30 +21,27 @@ const buttons = [
   },
 ];
 
+const  _apiKey = "0b7a39d1d230551375e150c26964761f15f93288";
+
+const api = new TodoistApi(_apiKey);
+
+
 
 function App() {
 
-  let data = [
-    {
-      key: 1,
-      label: "Have fun",
-    },
-    {
-      key: 2,
-      label: "Spread Empathy",
-    },
-    {
-      key: 3,
-      label: "Generate Value",
-    }
-  ];
+  // const api = new TodoistApi(_apiKey);
 
+  
   let [itemToDo, setItemToDo] = useState("");
-  // const [items, setItems] = useState(data);
+  
+  
+  
+  const[items, setItems] = useState([]);
+  useEffect(()=> {
+    
+    api.getTasks().then((response) =>  setItems(response))
+  }, []);
 
-  
-  const[items, setItems] = useState(JSON.parse(localStorage.getItem('items')) || data);
-  
   useEffect(() => {
     localStorage.setItem('items', JSON.stringify(items));
   }, [items]);
@@ -62,9 +60,14 @@ function App() {
 
   const handleAddItem = (e) => {
 
+    
     if(itemToDo !== "") {
       
       const newItem = {key: uuidv4(), label: itemToDo};
+      api.addTask({
+        content: itemToDo,
+        projectId: 2203306141,
+      })
       
       setItems((prevElement) => [newItem, ...prevElement]);
       setSearchResults((prevElement) => [newItem, ...prevElement]);
@@ -75,20 +78,30 @@ function App() {
     setItemToDo("");
   };
 
-  const handleItemDone = ({key}) => {
-      setItems((prevItems) =>  
-      
-        prevItems.map((item) => {
-          if(item.key === key) {
+  const handleItemDone = ({id}) => {
+    setItems((prevItems) =>  
+    
+    prevItems.map((item) => {
+      if(item.id === id) {
+          if(!item.done) {
+            api.closeTask(id).then((isSuccess) => console.log(isSuccess))
+          }
+           
+          
+          api.reopenTask(id).then((isSuccess) => console.log(isSuccess));
+
             return {...item, done: !item.done};
+          
+
+
           }else return  item;
         })
       );
       setSearchResults((prevItems) =>  
       
         prevItems.map((item) => {
-          if(item.key === key) {
-            return {...item, done: !item.done};
+          if(item.id === id) {
+            return {...item, completed: !item.completed};
           }else return  item;
         })
       );
@@ -98,26 +111,26 @@ function App() {
     setFilterType(type);
   }
   
-  const changeColorWarning = ({key}) => {
+  const changeColorWarning = ({id}) => {
     // console.log(key);
     setItems((prevItems) => 
     prevItems.map((item)=> {
-      if(item.key === key) {
+      if(item.id === id) {
         return {...item, chColor: !item.chColor}; 
       }else return item;
     }));
     setSearchResults((prevItems) => 
     prevItems.map((item)=> {
-      if(item.key === key) {
+      if(item.id === id) {
         return {...item, chColor: !item.chColor}; 
       }else return item;
     }));
   }
 
-  const handleDelete = ({key}) => {
+  const handleDelete = ({id}) => {
   
-      setItems((prevItems) => prevItems.filter((item) => item.key !== key));
-      setSearchResults((prevItems) => prevItems.filter((item) => item.key !== key));
+      setItems((prevItems) => prevItems.filter((item) => item.key !== id));
+      setSearchResults((prevItems) => prevItems.filter((item) => item.id !== id));
   }
 
   const handleSearch = (e) => {
@@ -125,7 +138,7 @@ function App() {
 
     
     const todos = items.filter(todo => {
-      return todo.label.indexOf(value) > -1; 
+      return todo.content.indexOf(value) > -1; 
     })
     
     setSearchResults(todos);
@@ -182,10 +195,10 @@ function App() {
         filteredArray.map((item) => {
           return (
 
-              <li className="list-group-item" key={item.key}>
+              <li className="list-group-item" key={item.id}>
                 <span  className={`todo-list-item ${(item.done === true) ? " done" : " "}`}>
                   <span className={`todo-list-item-label  ${(item.chColor === true) ? " text-warning" : ""}`}
-                    onClick={() => handleItemDone(item)}>{item.label}</span>
+                    onClick={() => handleItemDone(item)}>{item.content}</span>
   
                   <button
                     type="button"
