@@ -129,7 +129,7 @@ function App() {
 
   const handleDelete = ({id}) => {
   
-      setItems((prevItems) => prevItems.filter((item) => item.key !== id));
+      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
       setSearchResults((prevItems) => prevItems.filter((item) => item.id !== id));
   }
 
