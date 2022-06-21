@@ -63,13 +63,13 @@ function App() {
     
     if(itemToDo !== "") {
       
-      const newItem = {key: uuidv4(), label: itemToDo};
+      const newItem = {content: itemToDo};
       api.addTask({
         content: itemToDo,
         projectId: 2203306141,
-      })
+      }).then((item) => setItems((prevItem) => [item, ...prevItem]))
       
-      setItems((prevElement) => [newItem, ...prevElement]);
+      // setItems((prevElement) => [newItem, ...prevElement]);
       setSearchResults((prevElement) => [newItem, ...prevElement]);
     }
 
@@ -130,6 +130,7 @@ function App() {
   const handleDelete = ({id}) => {
   
       setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      api.deleteTask(id);
       setSearchResults((prevItems) => prevItems.filter((item) => item.id !== id));
   }
 
