@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
-
 import {v4 as uuidv4} from "uuid";
 import { TodoistApi } from "@doist/todoist-api-typescript";
-
 import "./App.css";
-
 // button-group
 const buttons = [
-  {
-    type: "all",
-    label: "All",
-  },
   {
     type: "active",
     label: "Active",
@@ -20,17 +13,10 @@ const buttons = [
     label: "Done",
   },
 ];
-
 const  _apiKey = "0b7a39d1d230551375e150c26964761f15f93288";
-
 const api = new TodoistApi(_apiKey);
-
-
-
 function App() {
-
   // const api = new TodoistApi(_apiKey);
-
   
   let [itemToDo, setItemToDo] = useState("");
   
@@ -42,58 +28,47 @@ function App() {
     api.getTasks().then((response) =>  setItems(response))
   }, []);
 
+
   useEffect(() => {
     localStorage.setItem('items', JSON.stringify(items));
   }, [items]);
 
 
-
   const[filterType, setFilterType] = useState("all");
-
   const[searchResults, setSearchResults] = useState([]);
-
   const heandleToDoChange = (e) => {
     setItemToDo(e.target.value);
   };
-
-
-
   const handleAddItem = (e) => {
 
-    
     if(itemToDo !== "") {
-      
-      const newItem = {content: itemToDo};
+
+      const newItem = {id: uuidv4(), content: itemToDo};
       api.addTask({
         content: itemToDo,
         projectId: 2203306141,
       }).then((item) => setItems((prevItem) => [item, ...prevItem]))
-      
-      // setItems((prevElement) => [newItem, ...prevElement]);
+
       setSearchResults((prevElement) => [newItem, ...prevElement]);
     }
 
-
-
     setItemToDo("");
   };
-
-  const handleItemDone = ({id}) => {
+  const handleItemDone = (id) => {
     setItems((prevItems) =>  
     
     prevItems.map((item) => {
-      if(item.id === id) {
+      if(item.id === id || item.task_id === id) {
           if(!item.done) {
-            api.closeTask(id).then((isSuccess) => console.log(isSuccess))
-          }
-           
-          
-          api.reopenTask(id).then((isSuccess) => console.log(isSuccess));
-
+            api.closeTask(id)
             return {...item, done: !item.done};
+          }else {
+            api.reopenTask(id);
+            return {...item, done: !item.done};
+          }
           
-
-
+          // return {...item, done: !item.done};
+          
           }else return  item;
         })
       );
@@ -106,8 +81,37 @@ function App() {
         })
       );
   };
-
   const handleFilterChange = (type) => {
+    if(type === "done") {
+      fetch("https://api.todoist.com/sync/v8/completed/get_all", {
+        method: "GET",
+        withCredentials: true,
+        headers: {
+          "Authorization": "Bearer " + _apiKey,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(resp => resp.json())
+        .then(function(data) {
+          setItems(data.items)
+          
+          setItems((prevItems) => prevItems.filter((item) => {
+            return (item.task_id !== 5948805700 && item.task_id !== 5945186980 
+              && item.task_id !== 5945186995 && item.task_id !== 5945187020 
+              && item.task_id !== 5945186968 &&  item.task_id !== 5945186960)
+          }));
+
+          setItems((prevItems) => prevItems.map((item) => {
+            return {...item, done: true};
+          }));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+    }else {
+      api.getTasks().then((response) =>  setItems(response))
+    }
     setFilterType(type);
   }
   
@@ -126,17 +130,17 @@ function App() {
       }else return item;
     }));
   }
-
   const handleDelete = ({id}) => {
-  
+
       setItems((prevItems) => prevItems.filter((item) => item.id !== id));
       api.deleteTask(id);
+    
+
       setSearchResults((prevItems) => prevItems.filter((item) => item.id !== id));
   }
 
   const handleSearch = (e) => {
     const value = e.target.value; 
-
     
     const todos = items.filter(todo => {
       return todo.content.indexOf(value) > -1; 
@@ -145,17 +149,12 @@ function App() {
     setSearchResults(todos);
     setFilterType("search");
   };
-
   const moreToDo= items.filter((item) => !item.done).length; 
-
   const doneToDo = items.length - moreToDo; 
-
-  const filteredArray =
-  filterType === "search" ? searchResults : 
-  filterType === "all"    ? items         : 
-  filterType === "done"   ? items.filter((item) => item.done) : items.filter((item) => !item.done);
-
-
+  // const filteredArray =
+  // filterType === "search" ? searchResults : 
+  // filterType === "all"    ? items         : 
+  // filterType === "done"   ? items.filter((item) => item.done) : items.filter((item) => !item.done);
   return (
     <div className="todo-app">
       {/* App-header */}
@@ -163,7 +162,6 @@ function App() {
         <h1>Todo List</h1>
         <h2>{moreToDo} more to do, {doneToDo} done</h2>
       </div>
-
       <div className="top-panel d-flex">
         {/* Search-panel */}
       
@@ -188,18 +186,23 @@ function App() {
           })}
           {/* Button group */}
       </div>
-
       {/* List-group */}
       <ul className="list-group todo-list">
         {/* simple item */}
-        {filteredArray.length > 0 && 
-        filteredArray.map((item) => {
+        {items.length > 0 && 
+        items.map((item) => {
           return (
-
               <li className="list-group-item" key={item.id}>
                 <span  className={`todo-list-item ${(item.done === true) ? " done" : " "}`}>
                   <span className={`todo-list-item-label  ${(item.chColor === true) ? " text-warning" : ""}`}
-                    onClick={() => handleItemDone(item)}>{item.content}</span>
+                    onClick={() =>  {
+                      if(item.task_id) {
+
+                        handleItemDone(item.task_id);
+                      }else if(item.id){
+                        handleItemDone(item.id); 
+                      }
+                    }}>{item.content}</span>
   
                   <button
                     type="button"
@@ -212,19 +215,18 @@ function App() {
                   <button
                     type="button"
                     className= {`btn btn-outline-danger btn-sm float-right`}
-                    onClick={() => handleDelete(item)}
+                    onClick={() => {
+                      handleDelete(item)
+                    }}
                   >
                     <i className="fa fa-trash-o" />
                   </button>
                 </span>
               </li>
-
           );
         })}
-
        
       </ul>
-
       <div className="item-add-form d-flex">
         
         <input
@@ -239,5 +241,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
