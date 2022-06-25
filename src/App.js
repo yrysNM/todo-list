@@ -4,6 +4,10 @@ import "./App.css";
 // button-group
 const buttons = [
   {
+    type: "all", 
+    label: "All"
+  },
+  {
     type: "active",
     label: "Active",
   },
@@ -42,7 +46,7 @@ function App() {
     if (label !== " ") {
       axios.post("http://localhost:3000/todoList", {
         label,
-        done: "false"
+        done: false
       }).then(res => {
         setItems([...items, res.data])
         setSearchResults((prevElement) => [res.data, ...prevElement]);
@@ -50,21 +54,63 @@ function App() {
 
     }
 
-    setLabel(" ");
+    setLabel("");
   }
 
-  const handleItemDone = (id) => {
-
+  const handleItemDone = ({_id}) => {
+    setItems((prevItems) => prevItems.map((item) => {
+      if(item._id === _id) {
+        
+        axios.put("http://localhost:3000/todoList/"+_id, {
+          label: item.label,
+          done: !item.done
+        });
+        return {...item, done: !item.done};
+      }else {
+        return item;
+      }
+    }))
   }
 
+  const changeColorWarning = ({_id}) => {
+    // console.log(key);
+    setItems((prevItems) => 
+    prevItems.map((item)=> {
+      if(item._id === _id) {
+        return {...item, chColor: !item.chColor}; 
+      }else return item;
+    }));
+    setSearchResults((prevItems) => 
+    prevItems.map((item)=> {
+      if(item._id === _id) {
+        return {...item, chColor: !item.chColor}; 
+      }else return item;
+    }));
+  }
 
+  const handleDelete = ({_id}) => {
+      axios.delete("http://localhost:3000/todoList/"+_id)
+  
+      setItems((prevItems) => prevItems.filter((item) => item._id !== _id));
+  } 
+
+  const handleFilterChange = (type) => {
+    setFilterType(type)
+  }
+
+  const moreToDo = items.filter((item) => !item.done).length; 
+  const doneToDo = items.length - moreToDo; 
+
+  const filteredArray = 
+    filterType === "all" ? items :
+    filterType === "done"? items.filter((item) => item.done) : items.filter((item) => !item.done); 
 
   return (
     <div className="todo-app">
       {/* App-header */}
       <div className="app-header d-flex">
         <h1>Todo List</h1>
-        <h2>{"moreToDo"} more to do, {"doneToDo"} done</h2>
+        <h2>{moreToDo} more to do, {doneToDo} done</h2>
       </div>
       <div className="top-panel d-flex">
         {/* Search-panel */}
@@ -81,7 +127,7 @@ function App() {
           return (
             <div key={btn.type} className="btn-group">
               <button type="button" className={`btn btn-info ${filterType === btn.type ? "" : " btn-outline-info"}`}
-              // onClick={() => handleFilterChange(btn.type)}
+              onClick={() => handleFilterChange(btn.type)}
               >
                 {btn.label}
               </button>
@@ -94,25 +140,18 @@ function App() {
       {/* List-group */}
       <ul className="list-group todo-list">
         {/* simple item */}
-        {items.length > 0 &&
-          items.map((item) => {
+        {filteredArray.length > 0 &&
+          filteredArray.map((item) => {
             return (
               <li className="list-group-item" key={item._id}>
                 <span className={`todo-list-item ${(item.done === true) ? " done" : " "}`}>
                   <span className={`todo-list-item-label  ${(item.chColor === true) ? " text-warning" : ""}`}
-                    onClick={() => {
-                      if (item.task_id) {
-
-                        handleItemDone(item.task_id);
-                      } else if (item.id) {
-                        handleItemDone(item.id);
-                      }
-                    }}>{item.label}</span>
+                    onClick={() => handleItemDone(item)}>{item.label}</span>
 
                   <button
                     type="button"
                     className={`btn btn-outline-success btn-sm float-right`}
-                  // onClick={() => changeColorWarning(item)}
+                    onClick={() => changeColorWarning(item)}
                   >
                     <i className="fa fa-exclamation" />
                   </button>
@@ -121,7 +160,7 @@ function App() {
                     type="button"
                     className={`btn btn-outline-danger btn-sm float-right`}
                     onClick={() => {
-                      // handleDelete(item)
+                      handleDelete(item)
                     }}
                   >
                     <i className="fa fa-trash-o" />
