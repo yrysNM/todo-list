@@ -115,15 +115,19 @@ function App() {
   const sortTodo = () => {
 
     setSort(!sort);
-    
-    if(sort) {
-      const strLabel =  [...items].sort((a, b) => a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1);
+
+    if (sort) {
+      const strLabel = [...items].sort((a, b) => a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1);
       setItems(strLabel);
     }
-    if(!sort) {
-      const strLabel =  [...items].sort((a, b) => a.label.toLowerCase() < b.label.toLowerCase() ? 1 : -1);
+    if (!sort) {
+      const strLabel = [...items].sort((a, b) => a.label.toLowerCase() < b.label.toLowerCase() ? 1 : -1);
       setItems(strLabel);
     }
+  }
+
+  const focusUpdateInput = () => {
+
   }
 
   const moreToDo = items.filter((item) => !item.done).length;
@@ -143,10 +147,10 @@ function App() {
       </div>
       <div className="top-panel d-flex">
 
-      <button className="btn btn-info btn-outline-info" style={{"marginRight": "10px"}} onClick={sortTodo}>
+        <button className="btn btn-info btn-outline-info" style={{ "marginRight": "10px" }} onClick={sortTodo}>
 
-        <img src={sortIcon} alt="img" width="35px" height="28px" style={{"cursor": "pointer", "objectFit": "cursor",  "height": 23}}/>
-      </button>
+          <img src={sortIcon} alt="img" width="35px" height="28px" style={{ "cursor": "pointer", "objectFit": "cursor", "height": 23 }} />
+        </button>
         {/* Search-panel */}
 
         <input
@@ -182,7 +186,10 @@ function App() {
                   <span className={`todo-list-item-label  ${(item.chColor === true) ? " text-warning" : ""}`}
                     onClick={() => handleItemDone(item)}>{item.label}</span>
 
-                  <button type="button" className="btn btn-outline-sucess btn-sm float-right" style={{"display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px"}}>
+                  {/**
+                   * @param {TODO -- edit item}
+                   */}
+                  <button type="button" className="btn btn-outline-sucess btn-sm float-right" style={{ "display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px" }} onClick={focusUpdateInput}>
                     <img src={editIcon} alt="edit img" width="35" height="31" />
                   </button>
 
