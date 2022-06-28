@@ -15,8 +15,8 @@ const AppModal = ({isOpen, closeModal, seletedIdOpen}) => {
         setInputValue(e.target.value);
     }
     const editItem = (e) =>{
-        e.preventDefault();
 
+        
         axios.put("http://localhost:3000/todoList/" + seletedIdOpen[0], {
             label: inputValue, 
             done: seletedIdOpen[1]
@@ -36,10 +36,10 @@ const AppModal = ({isOpen, closeModal, seletedIdOpen}) => {
                             <h2>Edit todo</h2>
 
                         </div>
-                        <form>
+                        <form onSubmit={editItem}>
                             <input type="text" value={inputValue} name="edit" onChange={setValue} />
 
-                            <button onClick={editItem}type="submit">Submit</button>
+                            <button type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
