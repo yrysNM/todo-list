@@ -36,10 +36,10 @@ const AppModal = ({isOpen, closeModal, seletedIdOpen}) => {
                             <h2>Edit todo</h2>
 
                         </div>
-                        <form onSubmit={editItem}>
-                            <input type="text" value={inputValue} name="edit" onChange={setValue} />
+                        <form onSubmit={editItem} className="modal_form">
+                            <input type="text" value={inputValue} name="edit" placeholder="Text" onChange={setValue} />
 
-                            <button type="submit">Submit</button>
+                            <button type="submit" className="modal_formBtn">Submit</button>
                         </form>
                     </div>
                 </div>

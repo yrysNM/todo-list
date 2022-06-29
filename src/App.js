@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AppModal from "./components/app-modal/AppModal";
 
-import editIcon from "./icons/edit.png";
-import sortIcon from "./icons/sort.png";
 import "./App.css";
 // button-group
 const buttons = [
@@ -24,13 +22,13 @@ const buttons = [
 function App() {
   // const api = new TodoistApi(_apiKey);
 
-  let [label, setLabel] = useState("");
+  const [label, setLabel] = useState("");
 
-  let [sort, setSort] = useState(false);
+  const [sort, setSort] = useState(false);
   
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  let [seletedIdOpen, setSelectedIdOpen] = useState(null);
+  const [seletedIdOpen, setSelectedIdOpen] = useState(null);
 
   const [items, setItems] = useState([]);
 
@@ -64,6 +62,7 @@ function App() {
         label,
         done: false
       }).then(res => {
+        console.log(res);
         setItems([...items, res.data])
         setSearchResults((prevElement) => [res.data, ...prevElement]);
       });
@@ -80,7 +79,8 @@ function App() {
 
         axios.put("http://localhost:3000/todoList/" + _id, {
           label: item.label,
-          done: !item.done
+          done: !item.done, 
+          chColor: item.chColor
         });
         return { ...item, done: !item.done };
       } else {
@@ -96,6 +96,11 @@ function App() {
     setItems((prevItems) =>
       prevItems.map((item) => {
         if (item._id === _id) {
+          axios.put("http://localhost:3000/todoList/" + _id, {
+              label: item.label, 
+              done: item.done, 
+              chColor: !item.chColor
+          });
           return { ...item, chColor: !item.chColor };
         } else return item;
       }));
@@ -181,8 +186,8 @@ function App() {
         <div className="top-panel d-flex">
 
           <button className="btn btn-info btn-outline-info" style={{ "marginRight": "10px" }} onClick={sortTodo}>
-
-            <img src={sortIcon} alt="img" width="35px" height="28px" style={{ "cursor": "pointer", "objectFit": "cursor", "height": 23 }} />
+          <i className="fa-solid fa-sort sortIcon"></i>
+            {/* <img src={sortIcon} alt="img" width="35px" height="28px" style={{ "cursor": "pointer", "objectFit": "cursor", "height": 23 }} /> */}
           </button>
           {/* Search-panel */}
 
@@ -226,9 +231,10 @@ function App() {
                    * @param {modal window}
                    * 
                    */}
-                    <button type="button" className="btn btn-outline-sucess btn-sm float-right" style={{ "display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px" }} 
+                    <button type="button" className="btn btn-outline-sucess btn-sm float-right btnEdit" style={{ "display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px" }} 
                     onClick={() => openModal(item._id, item.done)} >
-                      <img src={editIcon} alt="edit img" width="35" height="31" />
+                      {/* <img src={editIcon} alt="edit img" className="editImg" width="35" height="31" /> */}
+                      <i className="fa-solid fa-pen-to-square editImg"></i>
                     </button>
 
                     <button
@@ -236,7 +242,7 @@ function App() {
                       className={`btn btn-outline-success btn-sm float-right`}
                       onClick={() => changeColorWarning(item)}
                     >
-                      <i className="fa fa-exclamation" />
+                      <i className="fa-solid fa-exclamation"></i>
                     </button>
 
                     <button
@@ -246,7 +252,7 @@ function App() {
                         handleDelete(item)
                       }}
                     >
-                      <i className="fa fa-trash-o" />
+                      <i className="fa-solid fa-trash"></i>
                     </button>
                   </span>
                 </li>

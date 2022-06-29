@@ -71,3 +71,21 @@
   font-weight: bold;
   color: steelblue;
 }
+
+.btnEdit {
+  border: 1px solid #138496;
+  background-color: #fff;
+}
+
+.editImg {
+  /* filter: opacity(0.3) drop-shadow(0 0 0 #FFC607);  */
+  color: #138496;
+}
+
+.btnEdit:hover {
+  background-color: #138496;
+}
+
+.btnEdit:hover .editImg {
+  color: #fff;
+}
