@@ -1,0 +1,30 @@
+.addTaskForm {
+  // box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  padding: 6px 0;
+  // border-radius: 10px;
+  background: transparent;
+}
+
+.inputName {
+  &::placeholder {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 25px;
+
+  }
+}
+
+.inputDescr {
+  margin-top: 10px;
+
+  &::placeholder {
+    font-size: 13px;
+    font-weight: 400;
+
+  }
+}
+
+
+.blur {
+  border: 1px solid #999 !important;
+}

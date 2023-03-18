@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { AddTaskForm } from "../AddTaskForm";
+
 import "./addTask.scss";
 
 import { ReactComponent as PlusIcon } from "../../assets/icons/plus.svg";
@@ -17,11 +19,7 @@ export const AddTask = () => {
           <span className="sub-title">Add task</span>
         </div>
       )}
-      {isAddTask && (
-        <form>
-          <input type="text" />
-        </form>
-      )}
+      {isAddTask && <AddTaskForm setIsAddTask={setIsAddTask} />}
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { Today } from "../Today";
 import { AddTask } from "../AddTask";
 import { PageLayout } from "../layouts/PageLayout";
 
+import "./app.scss";
+
 export const App = (): JSX.Element => {
   return (
     <div className="container">
