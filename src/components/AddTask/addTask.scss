@@ -1,0 +1,34 @@
+.addTask {
+  min-height: 120px;
+  padding: 5px 0 0 0;
+
+  &-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    cursor: pointer;
+
+
+    .icon {
+      width: 17px;
+      height: 17px;
+      display: grid;
+      place-items: center;
+    }
+
+    &:hover {
+
+      .sub-title {
+
+        color: #dd4b39;
+      }
+
+      .icon {
+        background: #dd4b39;
+        border-radius: 100%;
+        color: #fff;
+      }
+    }
+  }
+}

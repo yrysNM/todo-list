@@ -1,0 +1,28 @@
+.today {
+  // display: grid;
+  // place-items: center;
+  margin-bottom: 10px;
+
+
+  &-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    justify-content: space-between;
+  }
+
+  &-subheadText {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  &-view {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+  }
+}

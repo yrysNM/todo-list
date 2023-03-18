@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AppModal from "./components/app-modal/AppModal";
+import AppModal from "../AppModal";
 
 import "./App.css";
 // button-group
@@ -25,7 +25,7 @@ function App() {
   const [label, setLabel] = useState("");
 
   const [sort, setSort] = useState(false);
-  
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [seletedIdOpen, setSelectedIdOpen] = useState(null);
@@ -79,7 +79,7 @@ function App() {
 
         axios.put("http://localhost:3000/todoList/" + _id, {
           label: item.label,
-          done: !item.done, 
+          done: !item.done,
           chColor: item.chColor
         });
         return { ...item, done: !item.done };
@@ -97,9 +97,9 @@ function App() {
       prevItems.map((item) => {
         if (item._id === _id) {
           axios.put("http://localhost:3000/todoList/" + _id, {
-              label: item.label, 
-              done: item.done, 
-              chColor: !item.chColor
+            label: item.label,
+            done: item.done,
+            chColor: !item.chColor
           });
           return { ...item, chColor: !item.chColor };
         } else return item;
@@ -161,7 +161,7 @@ function App() {
   }
 
   const closeModal = (isOpenModal) => {
-    
+
     setIsOpen(isOpenModal);
   }
 
@@ -186,7 +186,7 @@ function App() {
         <div className="top-panel d-flex">
 
           <button className="btn btn-info btn-outline-info" style={{ "marginRight": "10px" }} onClick={sortTodo}>
-          <i className="fa-solid fa-sort sortIcon"></i>
+            <i className="fa-solid fa-sort sortIcon"></i>
             {/* <img src={sortIcon} alt="img" width="35px" height="28px" style={{ "cursor": "pointer", "objectFit": "cursor", "height": 23 }} /> */}
           </button>
           {/* Search-panel */}
@@ -231,8 +231,8 @@ function App() {
                    * @param {modal window}
                    * 
                    */}
-                    <button type="button" className="btn btn-outline-sucess btn-sm float-right btnEdit" style={{ "display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px" }} 
-                    onClick={() => openModal(item._id, item.done)} >
+                    <button type="button" className="btn btn-outline-sucess btn-sm float-right btnEdit" style={{ "display": "flex", "justifyContent": "center", "alignItems": "center", "width": "35px", "height": "31px" }}
+                      onClick={() => openModal(item._id, item.done)} >
                       {/* <img src={editIcon} alt="edit img" className="editImg" width="35" height="31" /> */}
                       <i className="fa-solid fa-pen-to-square editImg"></i>
                     </button>
