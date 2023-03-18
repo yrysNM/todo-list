@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 9rem;
+  user-select: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: rgba(167, 165, 159, 0.7);
+  border-radius: 5rem;
+}
+
+body {
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Noto, Oxygen-Sans, Ubuntu, Cantrell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-weight: 400;
+  transition: all .4s ease;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1453px;
+  margin: 0 auto;
+
+  @media(max-width: 1200px) {
+    max-width: 900px;
+  }
+
+  @media(max-width: 900px) {
+    max-width: 700px;
+  }
+
+  @media(max-width: 797px) {
+    max-width: 400px;
+  }
+
+  @media(max-width: 575px) {
+    max-width: 230px;
+  }
+
+}
+
+@import "./blocks/title";
+@import "./blocks/icon";

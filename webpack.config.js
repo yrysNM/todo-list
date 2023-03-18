@@ -19,14 +19,37 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jsx|js)?$/,
+        test: /\.(jsx|js)?$/i,
         exclude: "/node_modules",
         loader: "babel-loader"
       },
       {
-        test: /\.(tsx|ts)?$/,
+        test: /\.(tsx|ts)?$/i,
         exclude: "/node_modules",
         use: "ts-loader"
+      },
+      {
+        test: /\.s[ac]ss?$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ]
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          "@svgr/webpack",
+          "svg-url-loader"
+        ],
+      },
+      {
+        test: /\.(png|jpe|svg?g|gif|mp3|webp)$/i,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
       }
     ]
   },
