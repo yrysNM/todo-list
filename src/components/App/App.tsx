@@ -1,13 +1,16 @@
 import React from "react";
 
-import { Header } from "../Header";
 import { Today } from "../Today";
+import { AddTask } from "../AddTask";
+import { PageLayout } from "../layouts/PageLayout";
 
 export const App = (): JSX.Element => {
   return (
     <div className="container">
-      <Header />
-      <Today />
+      <PageLayout>
+        <Today />
+        <AddTask />
+      </PageLayout>
     </div>
   );
-}
+};

@@ -62,5 +62,11 @@ a {
 
 }
 
+.mainContent {
+  width: 50%;
+  padding: 36px 55px 0 55px;
+  margin: 0 auto;
+}
+
 @import "./blocks/title";
 @import "./blocks/icon";

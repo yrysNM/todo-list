@@ -1,12 +1,13 @@
 import React from "react";
 
+import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
+
 import "./customBtn.scss";
 
-interface ICustomBtn {
+interface ICustomBtn extends IGeneralChildren {
   clazz: string;
   type: "submit" | "button";
   onPressButton: () => void;
-  children: React.ReactNode;
 }
 
 const CustomButton = ({
