@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classnames from "classnames";
 
 import { AddTaskForm } from "../AddTaskForm";
 
@@ -10,7 +11,11 @@ export const AddTask = () => {
   const [isAddTask, setIsAddTask] = useState<boolean>(false);
 
   return (
-    <div className="addTask">
+    <div
+      className={classnames("addTask", {
+        "addTask-active": isAddTask,
+      })}
+    >
       {!isAddTask && (
         <div className="addTask-wrapper" onClick={() => setIsAddTask(true)}>
           <span className="icon" style={{ marginRight: 11 }}>
