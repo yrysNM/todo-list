@@ -8,16 +8,23 @@ interface ICustomBtn extends IGeneralChildren {
   clazz: string;
   type: "submit" | "button";
   onPressButton: () => void;
+  isPrevent?: boolean;
 }
 
 const CustomButton = ({
   clazz,
   type,
   onPressButton,
+  isPrevent = false,
   children,
 }: ICustomBtn): JSX.Element => {
   return (
-    <button className={"btn " + clazz} type={type} onClick={onPressButton}>
+    <button
+      className={`btn ${isPrevent ? "prevent " : ""}` + clazz}
+      type={type}
+      disabled={isPrevent}
+      onClick={onPressButton}
+    >
       {children}
     </button>
   );

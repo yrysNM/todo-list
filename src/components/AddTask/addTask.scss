@@ -1,6 +1,13 @@
 .addTask {
   min-height: 120px;
   padding: 5px 0 0 0;
+  border-top: 1px solid rgba(240, 240, 240, 0.0);
+
+  &-active {
+    border-color: rgba(240, 240, 240, 1);
+    width: 100%;
+    transition: border-color .3s ease-in, width .4s ease-in-out;
+  }
 
   &-wrapper {
     display: flex;
@@ -15,6 +22,7 @@
       height: 17px;
       display: grid;
       place-items: center;
+      color: #dd4b39;
     }
 
     &:hover {

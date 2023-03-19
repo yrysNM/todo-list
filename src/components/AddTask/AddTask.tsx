@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import classnames from "classnames";
+
+import { AddTaskForm } from "../AddTaskForm";
 
 import "./addTask.scss";
 
@@ -8,7 +11,11 @@ export const AddTask = () => {
   const [isAddTask, setIsAddTask] = useState<boolean>(false);
 
   return (
-    <div className="addTask">
+    <div
+      className={classnames("addTask", {
+        "addTask-active": isAddTask,
+      })}
+    >
       {!isAddTask && (
         <div className="addTask-wrapper" onClick={() => setIsAddTask(true)}>
           <span className="icon" style={{ marginRight: 11 }}>
@@ -17,11 +24,7 @@ export const AddTask = () => {
           <span className="sub-title">Add task</span>
         </div>
       )}
-      {isAddTask && (
-        <form>
-          <input type="text" />
-        </form>
-      )}
+      {isAddTask && <AddTaskForm setIsAddTask={setIsAddTask} />}
     </div>
   );
 };
