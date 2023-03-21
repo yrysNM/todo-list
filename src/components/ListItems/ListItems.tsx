@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./listItems.scss";
 
@@ -8,6 +8,19 @@ import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg";
 import { CustomButton } from "../CustomButton";
 
 export const ListItems = () => {
+  // const api = new TodoistApi(process.env.REACT_APP_API_KEY);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/tasks`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+      },
+    })
+      .then((r) => r.json())
+      .then((res) => console.log(res));
+  }, []);
+
   return (
     <div className="list">
       <div className="list-wrapper">
