@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { TodoistApi } from "@doist/todoist-api-typescript";
+import React, { useState } from "react";
 
 import { CustomButton } from "../CustomButton";
 
