@@ -8,10 +8,6 @@ import { CompletedItems } from "../CompletedItems";
 
 import "./app.scss";
 
-export function timeout(delay: number) {
-  return new Promise((res) => setTimeout(res, delay));
-}
-
 export const App = (): JSX.Element => {
   return (
     <div className="container">

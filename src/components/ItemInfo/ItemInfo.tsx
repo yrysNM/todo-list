@@ -6,6 +6,8 @@ import {
   updateItems,
   setItems,
   updateCompletedItems,
+  fetchCompletedItems,
+  fetchItems,
 } from "../../redux/tool/ItemsSlice";
 import { toggleCompleteBtn } from "../../redux/tool/isCompletedBtnSlice";
 import { IViewComponent } from "../../Interfaces";
@@ -40,6 +42,8 @@ export const ItemInfo = ({
         const filterItems = items.filter((item) => item.id !== id);
         dispatch(setItems(filterItems));
       });
+
+      dispatch(fetchCompletedItems());
     } else {
       fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
         method: "POST",
@@ -54,15 +58,18 @@ export const ItemInfo = ({
 
         dispatch(updateCompletedItems(filterCompleted));
       });
+
+      dispatch(fetchItems());
     }
   };
 
   return (
     <div className="item-info">
       <span
-        className={classNames("completedCircle", {
+        className={classNames(`completedCircle`, {
           icon_completedActive:
             is_completed || (valBtn.value && id === valBtn.id),
+          completedCircleAnimation: !valBtn.value && id === valBtn.id,
         })}
         onClick={() => isCompletedClick(id, !is_completed)}
       >
