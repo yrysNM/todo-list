@@ -3,7 +3,8 @@
     "deploymentEnabled": {
       "main": true,
       "change/addTask": false, 
-      "change/readme": false
+      "change/readme": false, 
+      "dev": false
     }
   }
 }

@@ -23,6 +23,10 @@
   &-addTask {
     color: #fff;
   }
+
+  &-done {
+    text-decoration: line-through;
+  }
 }
 
 .sub-title {

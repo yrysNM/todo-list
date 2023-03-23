@@ -21,7 +21,9 @@ export const AddTask = () => {
           <span className="icon" style={{ marginRight: 11 }}>
             <PlusIcon />
           </span>
-          <span className="sub-title">Add task</span>
+          <span className="sub-title" style={{ fontSize: 14 }}>
+            Add task
+          </span>
         </div>
       )}
       {isAddTask && <AddTaskForm setIsAddTask={setIsAddTask} />}
