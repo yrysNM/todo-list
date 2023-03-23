@@ -1,4 +1,15 @@
-import { ITodoistData, IViewComponent } from "./ITodoist";
+import {
+  ITodoistData,
+  IViewComponent,
+  IArchiveCompleted,
+  IArchiveItem,
+} from "./ITodoist";
 import { IHeaders } from "./IHeaders";
 
-export { ITodoistData, IHeaders, IViewComponent };
+export {
+  ITodoistData,
+  IHeaders,
+  IViewComponent,
+  IArchiveCompleted,
+  IArchiveItem,
+};
