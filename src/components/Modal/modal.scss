@@ -1,0 +1,57 @@
+.overlay-modal {
+  display: grid;
+  place-items: center;
+}
+
+.popup {
+  max-width: 375px;
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  background-color: #FFF;
+  border-radius: 10px;
+
+  .form-add {
+    border: none !important;
+  }
+}
+
+
+.hamburger {
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 22px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 12px;
+  cursor: pointer;
+
+  span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: grey;
+    margin-bottom: 2px;
+    transition: all .5s;
+
+  }
+
+  &_active {
+    span {
+      margin-bottom: -2px;
+
+      &:nth-child(1) {
+        transform: translateY(3px) rotate(-45deg);
+      }
+
+      &:nth-child(2) {
+        display: none;
+      }
+
+      &:nth-child(3) {
+        transform: translateY(3px) rotate(45deg);
+      }
+    }
+  }
+}

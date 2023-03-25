@@ -4,18 +4,25 @@ import { CustomButton } from "../CustomButton";
 
 import "./addTaskForm.scss";
 
-export const AddTaskForm = ({
-  setIsAddTask,
-}: {
+export const AddTaskForm: React.FC<{
   setIsAddTask: (value: boolean) => void;
-}) => {
+}> = ({ setIsAddTask }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [descript, setDescript] = useState<string>("");
   const [isBlur, setIsBlur] = useState(false);
 
+  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("added");
+  };
+
   return (
     <div className="addTaskForm">
-      <form className={`form form-add ${isBlur ? "blur" : ""}`}>
+      <form
+        className={`form form-add ${isBlur ? "blur" : ""}`}
+        onSubmit={handleClick}
+      >
         <div className="form-block">
           <input
             type="text"
@@ -51,7 +58,7 @@ export const AddTaskForm = ({
             clazz="btn-addTask"
             type="submit"
             isPrevent={taskName.length > 0 ? false : true}
-            onPressButton={() => console.log("submit")}
+            onPressButton={handleClick}
           >
             <span className="title title-addTask">Add task</span>
           </CustomButton>
