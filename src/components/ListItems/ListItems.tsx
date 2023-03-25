@@ -29,7 +29,7 @@ export const ListItems = () => {
             is_completed={item.is_completed}
             id={item.id}
           />
-          <ItemBtns task_id={item.id} />
+          <ItemBtns task_id={item.id} content={item.content} />
         </ListItemsLayout>
       ))}
     </div>

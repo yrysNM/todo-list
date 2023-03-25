@@ -13,10 +13,12 @@ const Modal: React.FC<IModal> = ({ children, onClose }) => {
     <div className="overlay overlay-modal">
       <div className="popup">
         {children}
-        <div className="hamburger hamburger_active" onClick={onClose}>
-          <span />
-          <span />
-          <span />
+        <div className="closeModal" onClick={onClose}>
+          <div className="hamburger hamburger_active">
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       </div>
     </div>

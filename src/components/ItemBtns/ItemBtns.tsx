@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../../hooks/redux.hook";
 
+import { DeleteNotification } from "../DeleteNotification";
 import { AddTaskForm } from "../AddTaskForm";
 import { Modal } from "../Modal";
 import { fetchItem } from "../../redux/tool/ItemsSlice";
@@ -9,13 +10,20 @@ import { ReactComponent as TrashIcon } from "../../assets/icons/trash.svg";
 import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg";
 import { CustomButton } from "../CustomButton";
 
-export const ItemBtns = ({ task_id }: { task_id: string }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+export const ItemBtns = ({
+  task_id,
+  content,
+}: {
+  task_id: string;
+  content: string;
+}) => {
+  const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
+  const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const editIconClick = () => {
     dispatch(fetchItem(task_id));
-    setIsOpen(true);
+    setIsOpenEdit(true);
   };
 
   return (
@@ -31,14 +39,24 @@ export const ItemBtns = ({ task_id }: { task_id: string }) => {
         <CustomButton
           clazz="btn-icon"
           type="button"
-          onPressButton={() => console.log("trash")}
+          onPressButton={() => setIsOpenDelete(true)}
         >
           <TrashIcon className="iconRed" />
         </CustomButton>
       </div>
-      {isOpen && (
-        <Modal onClose={() => setIsOpen(false)}>
-          <AddTaskForm setIsAddTask={(value) => setIsOpen(value)} />
+      {isOpenEdit && (
+        <Modal onClose={() => setIsOpenEdit(false)}>
+          <AddTaskForm setIsAddTask={(value) => setIsOpenEdit(value)} />
+        </Modal>
+      )}
+
+      {isOpenDelete && (
+        <Modal onClose={() => setIsOpenDelete(false)}>
+          <DeleteNotification
+            content={content}
+            task_id={task_id}
+            onCancelButton={(value) => setIsOpenDelete(value)}
+          />
         </Modal>
       )}
     </>

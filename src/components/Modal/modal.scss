@@ -16,20 +16,41 @@
   }
 }
 
+.infoModalIcon {
+  color: grey;
+}
+
+.closeModal {
+  background: transparent;
+  color: #838080;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding-top: 5px;
+
+  &:hover {
+    transition: background .4s ease, color .5 ease;
+    background: #EEE;
+    color: #2C2C2C;
+  }
+}
+
 
 .hamburger {
   display: block;
-  position: absolute;
-  right: 10px;
-  top: 22px;
-  transform: translateY(-50%);
   width: 20px;
   height: 12px;
-  cursor: pointer;
 
   span {
     display: block;
-    height: 2px;
+    height: 1px;
     width: 100%;
     background-color: grey;
     margin-bottom: 2px;
@@ -37,9 +58,11 @@
 
   }
 
+
+
   &_active {
     span {
-      margin-bottom: -2px;
+      margin-bottom: -1px;
 
       &:nth-child(1) {
         transform: translateY(3px) rotate(-45deg);

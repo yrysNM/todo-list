@@ -27,7 +27,7 @@ const CompletedItems = () => {
               is_completed={true}
               id={d.id}
             />
-            <ItemBtns task_id={d.id} />
+            <ItemBtns task_id={d.id} content={d.content} />
           </ListItemsLayout>
         ))}
     </div>

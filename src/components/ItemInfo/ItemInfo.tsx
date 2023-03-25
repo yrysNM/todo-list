@@ -26,6 +26,12 @@ export const ItemInfo = ({
   const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
   const dispatch = useAppDispatch();
 
+  /**
+   *
+   * @param id -> item
+   * @param value -> is completed or not
+   * @Feture -> cache request or create logic for filter items
+   */
   const isCompletedClick = (id: string, value: boolean) => {
     dispatch(toggleCompleteBtn({ id, value }));
 
