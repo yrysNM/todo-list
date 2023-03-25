@@ -1,14 +1,22 @@
 import React, { useState } from "react";
+import { useAppDispatch } from "../../hooks/redux.hook";
 
 import { AddTaskForm } from "../AddTaskForm";
 import { Modal } from "../Modal";
+import { fetchItem } from "../../redux/tool/ItemsSlice";
 
 import { ReactComponent as TrashIcon } from "../../assets/icons/trash.svg";
 import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg";
 import { CustomButton } from "../CustomButton";
 
-export const ItemBtns = () => {
+export const ItemBtns = ({ task_id }: { task_id: string }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const editIconClick = () => {
+    dispatch(fetchItem(task_id));
+    setIsOpen(true);
+  };
 
   return (
     <>
@@ -16,7 +24,7 @@ export const ItemBtns = () => {
         <CustomButton
           clazz="btn-icon"
           type="button"
-          onPressButton={() => setIsOpen(true)}
+          onPressButton={() => editIconClick()}
         >
           <EditIcon />
         </CustomButton>
@@ -30,7 +38,7 @@ export const ItemBtns = () => {
       </div>
       {isOpen && (
         <Modal onClose={() => setIsOpen(false)}>
-          <AddTaskForm setIsAddTask={() => setIsOpen(false)} />
+          <AddTaskForm setIsAddTask={(value) => setIsOpen(value)} />
         </Modal>
       )}
     </>

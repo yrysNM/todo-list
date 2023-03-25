@@ -11,6 +11,7 @@ import {
 interface IItems {
   items: ITodoistData[];
   completedItems: IArchiveCompleted;
+  editItem: Partial<ITodoistData>;
 }
 
 const initialState: IItems = {
@@ -21,6 +22,7 @@ const initialState: IItems = {
     items: [],
     total: 0,
   },
+  editItem: {},
 };
 
 export const fetchCompletedItems = createAsyncThunk(
@@ -51,6 +53,21 @@ export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
     },
   });
 });
+
+export const fetchItem = createAsyncThunk(
+  "items/fetchItem",
+  async (task_id: string) => {
+    const { request } = useHttp();
+    return await request<ITodoistData>({
+      url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+        "Content-Type": "application/json",
+      },
+    });
+  }
+);
 
 const itemsSlice = createSlice({
   name: "items",
@@ -89,6 +106,9 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchItems.fulfilled, (state, action) => {
         state.items = action.payload;
+      })
+      .addCase(fetchItem.fulfilled, (state, action) => {
+        state.editItem = action.payload;
       });
   },
 });

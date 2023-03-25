@@ -3,8 +3,8 @@ import classNames from "classnames";
 
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import {
-  updateItems,
   setItems,
+  updateItems,
   updateCompletedItems,
   fetchCompletedItems,
   fetchItems,
@@ -30,6 +30,7 @@ export const ItemInfo = ({
     dispatch(toggleCompleteBtn({ id, value }));
 
     if (value) {
+      console.log("close");
       fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
         method: "POST",
         headers: {
@@ -42,9 +43,10 @@ export const ItemInfo = ({
         const filterItems = items.filter((item) => item.id !== id);
         dispatch(setItems(filterItems));
       });
-
       dispatch(fetchCompletedItems());
     } else {
+      console.log("reopen");
+
       fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
         method: "POST",
         headers: {
@@ -58,7 +60,6 @@ export const ItemInfo = ({
 
         dispatch(updateCompletedItems(filterCompleted));
       });
-
       dispatch(fetchItems());
     }
   };

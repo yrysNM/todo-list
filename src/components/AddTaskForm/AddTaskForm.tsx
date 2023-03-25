@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAppSelector } from "../../hooks/redux.hook";
 
 import { CustomButton } from "../CustomButton";
 
@@ -10,12 +11,20 @@ export const AddTaskForm: React.FC<{
   const [taskName, setTaskName] = useState<string>("");
   const [descript, setDescript] = useState<string>("");
   const [isBlur, setIsBlur] = useState(false);
+  const { editItem } = useAppSelector((state) => state.items);
 
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("added");
   };
+
+  useEffect(() => {
+    if (editItem) {
+      setTaskName(editItem.content);
+      setDescript(editItem.description);
+    }
+  }, [editItem]);
 
   return (
     <div className="addTaskForm">
@@ -28,7 +37,7 @@ export const AddTaskForm: React.FC<{
             type="text"
             name="task_name"
             className="input inputName"
-            value={taskName}
+            value={taskName || ""}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Task name"
@@ -38,7 +47,7 @@ export const AddTaskForm: React.FC<{
             type="text"
             name="description_task"
             className="input inputDescr"
-            value={descript}
+            value={descript || ""}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Description"
@@ -57,7 +66,7 @@ export const AddTaskForm: React.FC<{
           <CustomButton
             clazz="btn-addTask"
             type="submit"
-            isPrevent={taskName.length > 0 ? false : true}
+            isPrevent={taskName?.length > 0 ? false : true}
             onPressButton={handleClick}
           >
             <span className="title title-addTask">Add task</span>
