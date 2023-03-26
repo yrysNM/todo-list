@@ -16,6 +16,18 @@ export const AddTaskForm: React.FC<{
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    fetch(`${process.env.REACT_APP_BASE_URL}/tasks/`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: taskName,
+        due_lang: "en",
+        description: descript,
+      }),
+    });
     console.log("added");
   };
 
