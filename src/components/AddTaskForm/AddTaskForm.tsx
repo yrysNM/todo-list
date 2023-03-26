@@ -1,27 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAppSelector } from "../../hooks/redux.hook";
 
 import { CustomButton } from "../CustomButton";
 
 import "./addTaskForm.scss";
 
-export const AddTaskForm = ({
-  setIsAddTask,
-}: {
+export const AddTaskForm: React.FC<{
   setIsAddTask: (value: boolean) => void;
-}) => {
+}> = ({ setIsAddTask }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [descript, setDescript] = useState<string>("");
   const [isBlur, setIsBlur] = useState(false);
+  const { editItem } = useAppSelector((state) => state.items);
+
+  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("added");
+  };
+
+  useEffect(() => {
+    if (editItem) {
+      setTaskName(editItem.content);
+      setDescript(editItem.description);
+    }
+  }, [editItem]);
 
   return (
     <div className="addTaskForm">
-      <form className={`form form-add ${isBlur ? "blur" : ""}`}>
+      <form
+        className={`form form-add ${isBlur ? "blur" : ""}`}
+        onSubmit={handleClick}
+      >
         <div className="form-block">
           <input
             type="text"
             name="task_name"
             className="input inputName"
-            value={taskName}
+            value={taskName || ""}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Task name"
@@ -31,7 +47,7 @@ export const AddTaskForm = ({
             type="text"
             name="description_task"
             className="input inputDescr"
-            value={descript}
+            value={descript || ""}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Description"
@@ -50,8 +66,8 @@ export const AddTaskForm = ({
           <CustomButton
             clazz="btn-addTask"
             type="submit"
-            isPrevent={taskName.length > 0 ? false : true}
-            onPressButton={() => console.log("submit")}
+            isPrevent={taskName?.length > 0 ? false : true}
+            onPressButton={handleClick}
           >
             <span className="title title-addTask">Add task</span>
           </CustomButton>

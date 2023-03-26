@@ -6,11 +6,10 @@
 
 html {
   scroll-padding-top: 9rem;
-  user-select: none;
 }
 
 html::-webkit-scrollbar {
-  width: 0.5rem;
+  width: 0.3rem;
 }
 
 html::-webkit-scrollbar-track {
@@ -44,21 +43,21 @@ a {
   max-width: 1453px;
   margin: 0 auto;
 
-  @media(max-width: 1200px) {
-    max-width: 900px;
-  }
+  // @media(max-width: 1200px) {
+  //   max-width: 900px;
+  // }
 
-  @media(max-width: 900px) {
-    max-width: 700px;
-  }
+  // @media(max-width: 900px) {
+  //   max-width: 700px;
+  // }
 
-  @media(max-width: 797px) {
-    max-width: 400px;
-  }
+  // @media(max-width: 797px) {
+  //   max-width: 400px;
+  // }
 
-  @media(max-width: 575px) {
-    max-width: 230px;
-  }
+  // @media(max-width: 575px) {
+  //   max-width: 230px;
+  // }
 
 }
 

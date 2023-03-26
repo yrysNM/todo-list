@@ -2,7 +2,9 @@
   "git": {
     "deploymentEnabled": {
       "main": true,
-      "change/tsConfig": false
+      "change/addTask": false, 
+      "change/readme": false, 
+      "dev": false
     }
   }
 }
