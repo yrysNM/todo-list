@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useAppDispatch } from "../../hooks/redux.hook";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 
 import { DeleteNotification } from "../DeleteNotification";
 import { AddTaskForm } from "../AddTaskForm";
 import { Modal } from "../Modal";
-import { fetchItem } from "../../redux/tool/ItemsSlice";
+import { fetchItem, setItem } from "../../redux/tool/ItemsSlice";
 
 import { ReactComponent as TrashIcon } from "../../assets/icons/trash.svg";
 import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg";
@@ -19,10 +19,23 @@ export const ItemBtns = ({
 }) => {
   const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
   const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
+  const { items, completedItems } = useAppSelector((state) => state.items);
   const dispatch = useAppDispatch();
 
   const editIconClick = () => {
     dispatch(fetchItem(task_id));
+
+    const getItem = items.filter((item) => item.id === task_id)[0];
+    if (getItem) {
+      dispatch(setItem(getItem));
+    }
+
+    const getCompletedItem = completedItems.items.filter(
+      (item) => item.id === task_id
+    )[0];
+    if (getCompletedItem) {
+      dispatch(setItem(getCompletedItem));
+    }
     setIsOpenEdit(true);
   };
 
@@ -46,7 +59,11 @@ export const ItemBtns = ({
       </div>
       {isOpenEdit && (
         <Modal onClose={() => setIsOpenEdit(false)}>
-          <AddTaskForm setIsAddTask={(value) => setIsOpenEdit(value)} />
+          <AddTaskForm
+            setIsAddTask={(value) => setIsOpenEdit(value)}
+            isUpdateItem={true}
+            task_id={task_id}
+          />
         </Modal>
       )}
 

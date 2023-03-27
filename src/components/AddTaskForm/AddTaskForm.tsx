@@ -1,34 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector } from "../../hooks/redux.hook";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 
+import { fetchAddItem, fetchUpdateItem } from "../../redux/tool/ItemsSlice";
 import { CustomButton } from "../CustomButton";
 
 import "./addTaskForm.scss";
 
 export const AddTaskForm: React.FC<{
   setIsAddTask: (value: boolean) => void;
-}> = ({ setIsAddTask }) => {
+  isUpdateItem: boolean;
+  task_id?: string;
+}> = ({ setIsAddTask, isUpdateItem, task_id }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [descript, setDescript] = useState<string>("");
   const [isBlur, setIsBlur] = useState(false);
   const { editItem } = useAppSelector((state) => state.items);
+  const dispatch = useAppDispatch();
 
-  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleClickAdd = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_BASE_URL}/tasks/`, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    dispatch(
+      fetchAddItem({
         content: taskName,
-        due_lang: "en",
         description: descript,
-      }),
-    });
-    console.log("added");
+        due_lang: "en",
+      })
+    );
+
+    setTaskName("");
+    setDescript("");
+  };
+
+  const handleClickUpdate = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    dispatch(
+      fetchUpdateItem({
+        task_id,
+        content: taskName,
+        description: descript,
+      })
+    );
+
+    setIsAddTask(false);
   };
 
   useEffect(() => {
@@ -42,7 +65,7 @@ export const AddTaskForm: React.FC<{
     <div className="addTaskForm">
       <form
         className={`form form-add ${isBlur ? "blur" : ""}`}
-        onSubmit={handleClick}
+        onSubmit={isUpdateItem ? handleClickUpdate : handleClickAdd}
       >
         <div className="form-block">
           <input
@@ -79,9 +102,13 @@ export const AddTaskForm: React.FC<{
             clazz="btn-addTask"
             type="submit"
             isPrevent={taskName?.length > 0 ? false : true}
-            onPressButton={handleClick}
+            onPressButton={(e) =>
+              isUpdateItem ? handleClickUpdate(e) : handleClickAdd(e)
+            }
           >
-            <span className="title title-addTask">Add task</span>
+            <span className="title title-addTask">
+              {isUpdateItem ? "Save" : "Add task"}
+            </span>
           </CustomButton>
         </div>
       </form>
