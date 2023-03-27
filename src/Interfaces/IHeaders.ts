@@ -1,5 +1,5 @@
 export interface IHeaders {
-  headers: {
+  headers?: {
     "Content-Type": "application/json";
     Authorization?: string;
   };

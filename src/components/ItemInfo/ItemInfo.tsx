@@ -32,12 +32,12 @@ export const ItemInfo = ({
    * @param value -> is completed or not
    * @Feture -> cache request or create logic for filter items
    */
-  const isCompletedClick = (id: string, value: boolean) => {
+  const isCompletedClick = async (id: string, value: boolean) => {
     dispatch(toggleCompleteBtn({ id, value }));
 
     if (value) {
       console.log("close");
-      fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
+      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export const ItemInfo = ({
     } else {
       console.log("reopen");
 
-      fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
+      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
