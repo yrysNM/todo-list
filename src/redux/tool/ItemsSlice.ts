@@ -140,8 +140,6 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchUpdateItem.fulfilled, (state, action) => {
         if (state.items.some((item) => item.id === action.payload.id)) {
-          console.log("item");
-
           const updateItems = state.items.map((item) => {
             if (item.id === action.payload.id) {
               item.content = action.payload.content;
@@ -156,8 +154,6 @@ const itemsSlice = createSlice({
             (item) => item.id === action.payload.id
           )
         ) {
-          console.log("completed");
-
           const updateCompletedItems = state.completedItems.items.map(
             (item) => {
               if (item.id === action.payload.id) {
