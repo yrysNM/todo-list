@@ -26,7 +26,9 @@ export const AddTask = () => {
           </span>
         </div>
       )}
-      {isAddTask && <AddTaskForm setIsAddTask={setIsAddTask} />}
+      {isAddTask && (
+        <AddTaskForm setIsAddTask={setIsAddTask} isUpdateItem={false} />
+      )}
     </div>
   );
 };

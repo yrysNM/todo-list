@@ -3,8 +3,8 @@ import classNames from "classnames";
 
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import {
-  updateItems,
   setItems,
+  updateItems,
   updateCompletedItems,
   fetchCompletedItems,
   fetchItems,
@@ -26,11 +26,18 @@ export const ItemInfo = ({
   const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
   const dispatch = useAppDispatch();
 
-  const isCompletedClick = (id: string, value: boolean) => {
+  /**
+   *
+   * @param id -> item
+   * @param value -> is completed or not
+   * @Feture -> cache request or create logic for filter items
+   */
+  const isCompletedClick = async (id: string, value: boolean) => {
     dispatch(toggleCompleteBtn({ id, value }));
 
     if (value) {
-      fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
+      console.log("close");
+      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,10 +49,11 @@ export const ItemInfo = ({
         const filterItems = items.filter((item) => item.id !== id);
         dispatch(setItems(filterItems));
       });
-
       dispatch(fetchCompletedItems());
     } else {
-      fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
+      console.log("reopen");
+
+      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
@@ -58,7 +66,6 @@ export const ItemInfo = ({
 
         dispatch(updateCompletedItems(filterCompleted));
       });
-
       dispatch(fetchItems());
     }
   };

@@ -6,11 +6,13 @@ import {
   ITodoistData,
   IArchiveCompleted,
   IArchiveItem,
+  ITodoistMethod,
 } from "../../Interfaces";
 
 interface IItems {
   items: ITodoistData[];
   completedItems: IArchiveCompleted;
+  editItem: Partial<ITodoistData | IArchiveItem>;
 }
 
 const initialState: IItems = {
@@ -21,6 +23,7 @@ const initialState: IItems = {
     items: [],
     total: 0,
   },
+  editItem: {},
 };
 
 export const fetchCompletedItems = createAsyncThunk(
@@ -45,12 +48,47 @@ export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
   return await request<ITodoistData[]>({
     url: `${process.env.REACT_APP_BASE_URL}/tasks`,
     method: "GET",
-    headers: {
-      Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-      "Content-Type": "application/json",
-    },
   });
 });
+
+export const fetchItem = createAsyncThunk(
+  "items/fetchItem",
+  async (task_id: string) => {
+    const { request } = useHttp();
+    return await request<ITodoistData>({
+      url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
+      method: "GET",
+    });
+  }
+);
+
+export const fetchAddItem = createAsyncThunk(
+  "item/fetchAddItem",
+  async ({ content, description, due_lang }: ITodoistMethod) => {
+    const { request } = useHttp();
+    return await request<ITodoistData>({
+      url: `${process.env.REACT_APP_BASE_URL}/tasks/`,
+      method: "POST",
+      body: JSON.stringify({
+        content,
+        description,
+        due_lang,
+      }),
+    });
+  }
+);
+
+export const fetchUpdateItem = createAsyncThunk(
+  "item/fetchUpdateItem",
+  async ({ task_id, content, description }: ITodoistMethod) => {
+    const { request } = useHttp();
+    return await request<ITodoistData>({
+      url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
+      method: "POST",
+      body: JSON.stringify({ content, description }),
+    });
+  }
+);
 
 const itemsSlice = createSlice({
   name: "items",
@@ -58,6 +96,10 @@ const itemsSlice = createSlice({
   reducers: {
     setItems: (state, action: PayloadAction<ITodoistData[]>) => {
       state.items = action.payload;
+    },
+    setItem: (state, action: PayloadAction<ITodoistData | IArchiveItem>) => {
+      // state.items.push(action.payload);
+      state.editItem = action.payload;
     },
     updateItems: (
       state,
@@ -89,6 +131,42 @@ const itemsSlice = createSlice({
       })
       .addCase(fetchItems.fulfilled, (state, action) => {
         state.items = action.payload;
+      })
+      .addCase(fetchItem.fulfilled, (state, action) => {
+        state.editItem = action.payload;
+      })
+      .addCase(fetchAddItem.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(fetchUpdateItem.fulfilled, (state, action) => {
+        if (state.items.some((item) => item.id === action.payload.id)) {
+          const updateItems = state.items.map((item) => {
+            if (item.id === action.payload.id) {
+              item.content = action.payload.content;
+              item.description = action.payload.description;
+              return { ...item };
+            }
+            return item;
+          });
+          state.items = updateItems;
+        } else if (
+          state.completedItems.items.some(
+            (item) => item.id === action.payload.id
+          )
+        ) {
+          const updateCompletedItems = state.completedItems.items.map(
+            (item) => {
+              if (item.id === action.payload.id) {
+                item.content = action.payload.content;
+                item.description = action.payload.description;
+
+                return { ...item };
+              }
+              return item;
+            }
+          );
+          state.completedItems.items = updateCompletedItems;
+        }
       });
   },
 });
@@ -101,6 +179,7 @@ export const selectItems = (state: RootState) => state.items.items;
 
 export const {
   setItems,
+  setItem,
   updateItems,
   setCompletedItems,
   updateCompletedItems,
