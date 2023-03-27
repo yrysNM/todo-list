@@ -90,6 +90,56 @@ export const fetchUpdateItem = createAsyncThunk(
   }
 );
 
+function changeItems(
+  items: ITodoistData[],
+  changeData: Pick<ITodoistData, "content" | "description" | "id">
+) {
+  const { content, description, id } = changeData;
+
+  const updateItems = items.map((item) => {
+    if (item.id === id) {
+      item.content = content;
+      item.description = description;
+      return { ...item };
+    }
+    return item;
+  });
+  return updateItems;
+}
+
+function changeCompletedItems(
+  completedItems: IArchiveItem[],
+  changeData: Pick<ITodoistData, "content" | "description" | "id">
+) {
+  const { content, description, id } = changeData;
+
+  const updateCompletedItems = completedItems.map((item) => {
+    if (item.id === id) {
+      item.content = content;
+      item.description = description;
+
+      return { ...item };
+    }
+    return item;
+  });
+  return updateCompletedItems;
+}
+
+function isItems(
+  items: ITodoistData[] | IArchiveItem[],
+  id: string
+): items is ITodoistData[] {
+  return (items as ITodoistData[]).some((item) => item.id === id);
+}
+
+// function isCompletedItems(
+//   items: ITodoistData[] | IArchiveItem[],
+//   id: string
+// ): items is IArchiveItem[] {
+//   return (items as IArchiveItem[]).some((item) => item.id === id);
+//   // return (items as IArchiveItem).completed_at !== undefined;
+// }
+
 const itemsSlice = createSlice({
   name: "items",
   initialState,
@@ -122,6 +172,26 @@ const itemsSlice = createSlice({
     },
     updateCompletedItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.completedItems.items = action.payload;
+    },
+    toggleComplteItems: (
+      state,
+      action: PayloadAction<
+        Pick<ITodoistData, "content" | "description" | "id">
+      >
+    ) => {
+      const { content, description, id } = action.payload;
+
+      if (state.items.some((item) => item.id === id)) {
+        console.log("test");
+
+        state.completedItems.items = changeCompletedItems(
+          state.completedItems.items,
+          { content, description, id }
+        );
+      } else {
+        console.log("test2");
+        state.items = changeItems(state.items, { content, description, id });
+      }
     },
   },
   extraReducers: (builder) => {
@@ -159,7 +229,6 @@ const itemsSlice = createSlice({
               if (item.id === action.payload.id) {
                 item.content = action.payload.content;
                 item.description = action.payload.description;
-
                 return { ...item };
               }
               return item;
@@ -181,6 +250,7 @@ export const {
   setItems,
   setItem,
   updateItems,
+  toggleComplteItems,
   setCompletedItems,
   updateCompletedItems,
 } = actions;

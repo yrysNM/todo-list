@@ -8,6 +8,7 @@ import {
   updateCompletedItems,
   fetchCompletedItems,
   fetchItems,
+  toggleComplteItems,
 } from "../../redux/tool/ItemsSlice";
 import { toggleCompleteBtn } from "../../redux/tool/isCompletedBtnSlice";
 import { IViewComponent } from "../../Interfaces";
@@ -27,7 +28,6 @@ export const ItemInfo = ({
   const dispatch = useAppDispatch();
 
   /**
-   *
    * @param id -> item
    * @param value -> is completed or not
    * @Feture -> cache request or create logic for filter items
@@ -44,12 +44,21 @@ export const ItemInfo = ({
           Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
         },
       }).then(() => {
-        dispatch(updateItems({ id, is_completed }));
+        // dispatch(updateItems({ id, is_completed }));
 
-        const filterItems = items.filter((item) => item.id !== id);
-        dispatch(setItems(filterItems));
+        dispatch(fetchCompletedItems());
       });
-      dispatch(fetchCompletedItems());
+      const filterItems = items.filter((item) => item.id !== id);
+      dispatch(setItems(filterItems));
+
+      const getCompltedItem = items.filter((item) => item.id === id)[0];
+      dispatch(
+        toggleComplteItems({
+          content: getCompltedItem.content,
+          description: getCompltedItem.description,
+          id: getCompltedItem.id,
+        })
+      );
     } else {
       console.log("reopen");
 
@@ -60,13 +69,22 @@ export const ItemInfo = ({
           "Content-Type": "application/json",
         },
       }).then(() => {
-        const filterCompleted = completedItems.items.filter(
-          (item) => item.id !== id
-        );
-
-        dispatch(updateCompletedItems(filterCompleted));
+        dispatch(fetchItems());
       });
-      dispatch(fetchItems());
+
+      const filterCompleted = completedItems.items.filter(
+        (item) => item.id !== id
+      );
+      dispatch(updateCompletedItems(filterCompleted));
+
+      const getItem = completedItems.items.filter((item) => item.id === id)[0];
+      dispatch(
+        toggleComplteItems({
+          content: getItem.content,
+          description: getItem.description,
+          id: getItem.id,
+        })
+      );
     }
   };
 
