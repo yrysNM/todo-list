@@ -7,7 +7,9 @@ import "./customBtn.scss";
 interface ICustomBtn extends IGeneralChildren {
   clazz: string;
   type: "submit" | "button";
-  onPressButton: () => void;
+  onPressButton: (
+    e?: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => void;
   isPrevent?: boolean;
 }
 

@@ -64,3 +64,10 @@ export interface IArchiveCompleted {
   items: IArchiveItem[];
   total: number;
 }
+
+export interface ITodoistMethod {
+  content: string;
+  description: string;
+  due_lang?: "en";
+  task_id?: string;
+}

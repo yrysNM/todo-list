@@ -16,6 +16,7 @@ export const useHttp = () => {
     body = null,
     headers = {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
     },
   }: IRequest): Promise<
     T extends ITodoistData ? ITodoistData : ITodoistData[]

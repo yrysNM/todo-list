@@ -1,0 +1,80 @@
+.overlay-modal {
+  display: grid;
+  place-items: center;
+}
+
+.popup {
+  max-width: 375px;
+  width: 100%;
+  padding: 10px;
+  position: relative;
+  background-color: #FFF;
+  border-radius: 10px;
+
+  .form-add {
+    border: none !important;
+  }
+}
+
+.infoModalIcon {
+  color: grey;
+}
+
+.closeModal {
+  background: transparent;
+  color: #838080;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding-top: 5px;
+
+  &:hover {
+    transition: background .4s ease, color .5 ease;
+    background: #EEE;
+    color: #2C2C2C;
+  }
+}
+
+
+.hamburger {
+  display: block;
+  width: 20px;
+  height: 12px;
+
+  span {
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: grey;
+    margin-bottom: 2px;
+    transition: all .5s;
+
+  }
+
+
+
+  &_active {
+    span {
+      margin-bottom: -1px;
+
+      &:nth-child(1) {
+        transform: translateY(3px) rotate(-45deg);
+      }
+
+      &:nth-child(2) {
+        display: none;
+      }
+
+      &:nth-child(3) {
+        transform: translateY(3px) rotate(45deg);
+      }
+    }
+  }
+}
