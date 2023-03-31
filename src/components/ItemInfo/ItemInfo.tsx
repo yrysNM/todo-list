@@ -4,10 +4,7 @@ import classNames from "classnames";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import {
   setItems,
-  updateItems,
   updateCompletedItems,
-  fetchCompletedItems,
-  fetchItems,
   toggleComplteItems,
 } from "../../redux/tool/ItemsSlice";
 import { toggleCompleteBtn } from "../../redux/tool/isCompletedBtnSlice";
@@ -30,47 +27,28 @@ export const ItemInfo = ({
   /**
    * @param id -> item
    * @param value -> is completed or not
-   * @Feture -> cache request or create logic for filter items
+   * @Feture -> --cache request or create logic for filter items-- kinda done
    */
   const isCompletedClick = async (id: string, value: boolean) => {
     dispatch(toggleCompleteBtn({ id, value }));
 
     if (value) {
       console.log("close");
+      const filterItems = items.filter((item) => item.id !== id);
+      dispatch(setItems(filterItems));
+
+      const getCompltedItem = items.filter((item) => item.id === id)[0];
+      dispatch(toggleComplteItems({ isItem: false, data: getCompltedItem }));
+
       await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
         },
-      }).then(() => {
-        // dispatch(updateItems({ id, is_completed }));
-
-        dispatch(fetchCompletedItems());
       });
-      const filterItems = items.filter((item) => item.id !== id);
-      dispatch(setItems(filterItems));
-
-      const getCompltedItem = items.filter((item) => item.id === id)[0];
-      dispatch(
-        toggleComplteItems({
-          content: getCompltedItem.content,
-          description: getCompltedItem.description,
-          id: getCompltedItem.id,
-        })
-      );
     } else {
       console.log("reopen");
-
-      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-          "Content-Type": "application/json",
-        },
-      }).then(() => {
-        dispatch(fetchItems());
-      });
 
       const filterCompleted = completedItems.items.filter(
         (item) => item.id !== id
@@ -80,11 +58,18 @@ export const ItemInfo = ({
       const getItem = completedItems.items.filter((item) => item.id === id)[0];
       dispatch(
         toggleComplteItems({
-          content: getItem.content,
-          description: getItem.description,
-          id: getItem.id,
+          isItem: true,
+          data: getItem,
         })
       );
+
+      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+          "Content-Type": "application/json",
+        },
+      });
     }
   };
 

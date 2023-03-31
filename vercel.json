@@ -4,6 +4,7 @@
       "main": true,
       "change/addTask": false, 
       "change/readme": false, 
+      "change/completed": false,
       "dev": false
     }
   }

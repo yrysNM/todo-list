@@ -3,16 +3,16 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 import type { RootState } from "../store";
 import {
-  ITodoistData,
+  // IArchiveItem,
   IArchiveCompleted,
   IArchiveItem,
   ITodoistMethod,
 } from "../../Interfaces";
 
 interface IItems {
-  items: ITodoistData[];
+  items: IArchiveItem[];
   completedItems: IArchiveCompleted;
-  editItem: Partial<ITodoistData | IArchiveItem>;
+  editItem: Partial<IArchiveItem | IArchiveItem>;
 }
 
 const initialState: IItems = {
@@ -45,7 +45,7 @@ export const fetchCompletedItems = createAsyncThunk(
 
 export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
   const { request } = useHttp();
-  return await request<ITodoistData[]>({
+  return await request<IArchiveItem[]>({
     url: `${process.env.REACT_APP_BASE_URL}/tasks`,
     method: "GET",
   });
@@ -55,7 +55,7 @@ export const fetchItem = createAsyncThunk(
   "items/fetchItem",
   async (task_id: string) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
       method: "GET",
     });
@@ -66,7 +66,7 @@ export const fetchAddItem = createAsyncThunk(
   "item/fetchAddItem",
   async ({ content, description, due_lang }: ITodoistMethod) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/`,
       method: "POST",
       body: JSON.stringify({
@@ -82,7 +82,7 @@ export const fetchUpdateItem = createAsyncThunk(
   "item/fetchUpdateItem",
   async ({ task_id, content, description }: ITodoistMethod) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
       method: "POST",
       body: JSON.stringify({ content, description }),
@@ -90,64 +90,14 @@ export const fetchUpdateItem = createAsyncThunk(
   }
 );
 
-function changeItems(
-  items: ITodoistData[],
-  changeData: Pick<ITodoistData, "content" | "description" | "id">
-) {
-  const { content, description, id } = changeData;
-
-  const updateItems = items.map((item) => {
-    if (item.id === id) {
-      item.content = content;
-      item.description = description;
-      return { ...item };
-    }
-    return item;
-  });
-  return updateItems;
-}
-
-function changeCompletedItems(
-  completedItems: IArchiveItem[],
-  changeData: Pick<ITodoistData, "content" | "description" | "id">
-) {
-  const { content, description, id } = changeData;
-
-  const updateCompletedItems = completedItems.map((item) => {
-    if (item.id === id) {
-      item.content = content;
-      item.description = description;
-
-      return { ...item };
-    }
-    return item;
-  });
-  return updateCompletedItems;
-}
-
-function isItems(
-  items: ITodoistData[] | IArchiveItem[],
-  id: string
-): items is ITodoistData[] {
-  return (items as ITodoistData[]).some((item) => item.id === id);
-}
-
-// function isCompletedItems(
-//   items: ITodoistData[] | IArchiveItem[],
-//   id: string
-// ): items is IArchiveItem[] {
-//   return (items as IArchiveItem[]).some((item) => item.id === id);
-//   // return (items as IArchiveItem).completed_at !== undefined;
-// }
-
 const itemsSlice = createSlice({
   name: "items",
   initialState,
   reducers: {
-    setItems: (state, action: PayloadAction<ITodoistData[]>) => {
+    setItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.items = action.payload;
     },
-    setItem: (state, action: PayloadAction<ITodoistData | IArchiveItem>) => {
+    setItem: (state, action: PayloadAction<IArchiveItem | IArchiveItem>) => {
       // state.items.push(action.payload);
       state.editItem = action.payload;
     },
@@ -175,22 +125,12 @@ const itemsSlice = createSlice({
     },
     toggleComplteItems: (
       state,
-      action: PayloadAction<
-        Pick<ITodoistData, "content" | "description" | "id">
-      >
+      action: PayloadAction<{ isItem: boolean; data: IArchiveItem }>
     ) => {
-      const { content, description, id } = action.payload;
-
-      if (state.items.some((item) => item.id === id)) {
-        console.log("test");
-
-        state.completedItems.items = changeCompletedItems(
-          state.completedItems.items,
-          { content, description, id }
-        );
+      if (action.payload.isItem) {
+        state.items.push(action.payload.data);
       } else {
-        console.log("test2");
-        state.items = changeItems(state.items, { content, description, id });
+        state.completedItems.items.push(action.payload.data);
       }
     },
   },

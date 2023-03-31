@@ -1,15 +1,15 @@
 import {
-  ITodoistData,
+  IArchiveItem,
   IViewComponent,
   IArchiveCompleted,
-  IArchiveItem,
+  // IArchiveItem,
   ITodoistMethod,
 } from "./ITodoist";
 import { IHeaders } from "./IHeaders";
 
 export {
   ITodoistMethod,
-  ITodoistData,
+  // IArchiveItem,
   IHeaders,
   IViewComponent,
   IArchiveCompleted,
