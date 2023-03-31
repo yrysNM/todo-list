@@ -1,4 +1,4 @@
-import { IHeaders, ITodoistData } from "../Interfaces";
+import { IHeaders, IArchiveItem } from "../Interfaces";
 
 interface IRequest extends IHeaders {
   url: string;
@@ -6,11 +6,11 @@ interface IRequest extends IHeaders {
   body?: string;
 }
 
-type FromRequest<T extends ITodoistData | ITodoistData[]> =
-  T extends ITodoistData ? ITodoistData : ITodoistData[];
+type FromRequest<T extends IArchiveItem | IArchiveItem[]> =
+  T extends IArchiveItem ? IArchiveItem : IArchiveItem[];
 
 export const useHttp = () => {
-  const request = async <T extends ITodoistData | ITodoistData[]>({
+  const request = async <T extends IArchiveItem | IArchiveItem[]>({
     url,
     method,
     body = null,
@@ -19,7 +19,7 @@ export const useHttp = () => {
       Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
     },
   }: IRequest): Promise<
-    T extends ITodoistData ? ITodoistData : ITodoistData[]
+    T extends IArchiveItem ? IArchiveItem : IArchiveItem[]
   > => {
     try {
       const response = await fetch(url, { method, body, headers });
@@ -30,7 +30,7 @@ export const useHttp = () => {
 
       const data = await response.json();
 
-      if (isArray<ITodoistData>(data)) {
+      if (isArray<IArchiveItem>(data)) {
         return data as FromRequest<T>;
       } else if (isObject(data)) {
         return data as FromRequest<T>;
@@ -51,6 +51,6 @@ function isArray<T>(data: unknown): data is Array<T> {
   return Array.isArray(data);
 }
 
-function isObject(data: unknown): data is ITodoistData {
-  return (data as ITodoistData).content !== undefined;
+function isObject(data: unknown): data is IArchiveItem {
+  return (data as IArchiveItem).content !== undefined;
 }

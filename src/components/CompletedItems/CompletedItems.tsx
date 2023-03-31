@@ -8,13 +8,12 @@ import { ListItemsLayout } from "../layouts/ListItemsLayout";
 
 const CompletedItems = () => {
   const { completedItems } = useAppSelector((state) => state.items);
-  const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchCompletedItems());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valBtn]);
+  }, []);
 
   return (
     <div>

@@ -3,16 +3,16 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 import type { RootState } from "../store";
 import {
-  ITodoistData,
+  // IArchiveItem,
   IArchiveCompleted,
   IArchiveItem,
   ITodoistMethod,
 } from "../../Interfaces";
 
 interface IItems {
-  items: ITodoistData[];
+  items: IArchiveItem[];
   completedItems: IArchiveCompleted;
-  editItem: Partial<ITodoistData | IArchiveItem>;
+  editItem: Partial<IArchiveItem | IArchiveItem>;
 }
 
 const initialState: IItems = {
@@ -45,7 +45,7 @@ export const fetchCompletedItems = createAsyncThunk(
 
 export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
   const { request } = useHttp();
-  return await request<ITodoistData[]>({
+  return await request<IArchiveItem[]>({
     url: `${process.env.REACT_APP_BASE_URL}/tasks`,
     method: "GET",
   });
@@ -55,7 +55,7 @@ export const fetchItem = createAsyncThunk(
   "items/fetchItem",
   async (task_id: string) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
       method: "GET",
     });
@@ -66,7 +66,7 @@ export const fetchAddItem = createAsyncThunk(
   "item/fetchAddItem",
   async ({ content, description, due_lang }: ITodoistMethod) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/`,
       method: "POST",
       body: JSON.stringify({
@@ -82,7 +82,7 @@ export const fetchUpdateItem = createAsyncThunk(
   "item/fetchUpdateItem",
   async ({ task_id, content, description }: ITodoistMethod) => {
     const { request } = useHttp();
-    return await request<ITodoistData>({
+    return await request<IArchiveItem>({
       url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
       method: "POST",
       body: JSON.stringify({ content, description }),
@@ -94,10 +94,10 @@ const itemsSlice = createSlice({
   name: "items",
   initialState,
   reducers: {
-    setItems: (state, action: PayloadAction<ITodoistData[]>) => {
+    setItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.items = action.payload;
     },
-    setItem: (state, action: PayloadAction<ITodoistData | IArchiveItem>) => {
+    setItem: (state, action: PayloadAction<IArchiveItem | IArchiveItem>) => {
       // state.items.push(action.payload);
       state.editItem = action.payload;
     },
@@ -122,6 +122,16 @@ const itemsSlice = createSlice({
     },
     updateCompletedItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.completedItems.items = action.payload;
+    },
+    toggleComplteItems: (
+      state,
+      action: PayloadAction<{ isItem: boolean; data: IArchiveItem }>
+    ) => {
+      if (action.payload.isItem) {
+        state.items.push(action.payload.data);
+      } else {
+        state.completedItems.items.push(action.payload.data);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -159,7 +169,6 @@ const itemsSlice = createSlice({
               if (item.id === action.payload.id) {
                 item.content = action.payload.content;
                 item.description = action.payload.description;
-
                 return { ...item };
               }
               return item;
@@ -181,6 +190,7 @@ export const {
   setItems,
   setItem,
   updateItems,
+  toggleComplteItems,
   setCompletedItems,
   updateCompletedItems,
 } = actions;
