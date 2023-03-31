@@ -55,7 +55,7 @@ export const AddTaskForm: React.FC<{
   };
 
   useEffect(() => {
-    if (editItem) {
+    if (editItem && isUpdateItem) {
       setTaskName(editItem.content);
       setDescript(editItem.description);
     }

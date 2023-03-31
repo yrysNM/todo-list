@@ -10,14 +10,13 @@ import "./listItems.scss";
 
 export const ListItems = () => {
   const { items } = useAppSelector((state) => state.items);
-  const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchItems());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valBtn]);
+  }, []);
 
   return (
     <div>
