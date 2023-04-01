@@ -12,6 +12,7 @@
     align-items: flex-end;
   }
 
+
   &:hover {
     .item-methods {
       opacity: 1;
@@ -21,9 +22,7 @@
 
   @media(max-width: 575px) {
     .item-methods {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
       opacity: 1;
       transition: opacity .2s ease;
     }
@@ -35,6 +34,9 @@
 
 .item-methods {
   opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .btn-icon {
     margin-left: 8px;
