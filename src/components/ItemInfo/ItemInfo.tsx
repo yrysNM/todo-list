@@ -98,7 +98,7 @@ export const ItemInfo = ({
           className={classNames("sub-title", {
             "title-done": is_completed,
           })}
-          style={{ marginTop: 4 }}
+          style={{ marginTop: 4, lineHeight: "16px" }}
         >
           {description}
         </p>
