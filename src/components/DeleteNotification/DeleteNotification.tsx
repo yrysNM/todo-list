@@ -15,15 +15,7 @@ const DeleteNotification: React.FC<{
   const { items, completedItems } = useAppSelector((state) => state.items);
   const dispatch = useAppDispatch();
 
-  const deleteIconClick = () => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
-        "Content-Type": "application/json",
-      },
-    });
-
+  const deleteIconClick = async () => {
     dispatch(setItems(items.filter((item) => item.id !== task_id)));
 
     dispatch(
@@ -32,6 +24,13 @@ const DeleteNotification: React.FC<{
       )
     );
     onCancelButton(false);
+    await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (
