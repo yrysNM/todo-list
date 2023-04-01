@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
+import React, { useState, useEffect, useRef } from "react";
 
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
+import { useAutoSizeTextArea } from "../../hooks/textarea.hook";
 import { fetchAddItem, fetchUpdateItem } from "../../redux/tool/ItemsSlice";
 import { CustomButton } from "../CustomButton";
 
@@ -13,6 +14,7 @@ export const AddTaskForm: React.FC<{
 }> = ({ setIsAddTask, isUpdateItem, task_id }) => {
   const [taskName, setTaskName] = useState<string>("");
   const [descript, setDescript] = useState<string>("");
+  const textAreaInput = useRef<HTMLTextAreaElement>(null);
   const [isBlur, setIsBlur] = useState(false);
   const { editItem } = useAppSelector((state) => state.items);
   const dispatch = useAppDispatch();
@@ -59,7 +61,10 @@ export const AddTaskForm: React.FC<{
       setTaskName(editItem.content);
       setDescript(editItem.description);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editItem]);
+
+  useAutoSizeTextArea(textAreaInput.current, descript);
 
   return (
     <div className="addTaskForm">
@@ -78,15 +83,17 @@ export const AddTaskForm: React.FC<{
             placeholder="Task name"
             onChange={(e) => setTaskName(e.target.value)}
           />
-          <input
-            type="text"
-            name="description_task"
-            className="input inputDescr"
+          <textarea
+            ref={textAreaInput}
+            name="description_taks"
+            className="textarea input inputDescr"
             value={descript || ""}
+            onChange={(e) => {
+              setDescript(e.target.value);
+            }}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Description"
-            onChange={(e) => setDescript(e.target.value)}
           />
         </div>
 

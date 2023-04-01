@@ -3,7 +3,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 import type { RootState } from "../store";
 import {
-  // IArchiveItem,
   IArchiveCompleted,
   IArchiveItem,
   ITodoistMethod,
@@ -117,9 +116,6 @@ const itemsSlice = createSlice({
 
       state.items = updateItems;
     },
-    setCompletedItems: (state, action: PayloadAction<IArchiveCompleted>) => {
-      state.completedItems = action.payload;
-    },
     updateCompletedItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.completedItems.items = action.payload;
     },
@@ -191,6 +187,5 @@ export const {
   setItem,
   updateItems,
   toggleComplteItems,
-  setCompletedItems,
   updateCompletedItems,
 } = actions;
