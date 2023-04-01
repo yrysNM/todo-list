@@ -5,6 +5,7 @@
       "change/addTask": false, 
       "change/readme": false, 
       "change/completed": false,
+      "change/responsive": false,
       "dev": false
     }
   }
