@@ -126,7 +126,7 @@ const itemsSlice = createSlice({
       if (action.payload.isItem) {
         state.items.push(action.payload.data);
       } else {
-        state.completedItems.items.push(action.payload.data);
+        state.completedItems.items.unshift(action.payload.data);
       }
     },
   },

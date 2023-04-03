@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { CustomButton } from "../CustomButton";
-import { Modal } from "../Modal";
+import { View } from "../view/View";
 
 import "./today.scss";
 
@@ -11,6 +11,16 @@ export const Today = () => {
   const [date] = useState<Date>(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const days: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  useEffect(() => {
+    const handleHide = () => setIsOpen(false);
+
+    window.addEventListener("click", handleHide);
+
+    return () => {
+      window.removeEventListener("click", handleHide);
+    };
+  });
 
   return (
     <>
@@ -27,7 +37,10 @@ export const Today = () => {
           <CustomButton
             clazz="btn-headToday"
             type="button"
-            onPressButton={() => setIsOpen(true)}
+            onPressButton={(e) => {
+              e.stopPropagation();
+              setIsOpen(true);
+            }}
           >
             <div className="today-view">
               <span className="icon icon-disactive">
@@ -41,12 +54,7 @@ export const Today = () => {
           </CustomButton>
         </div>
       </section>
-
-      {isOpen && (
-        <Modal onClose={() => setIsOpen(false)}>
-          <h2>Test</h2>
-        </Modal>
-      )}
+      {isOpen && <View />}
     </>
   );
 };
