@@ -22,6 +22,13 @@ export const Today = () => {
     };
   });
 
+  function onPressBtn(
+    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
+  ) {
+    e.stopPropagation();
+    setIsOpen(true);
+  }
+
   return (
     <>
       <section className="today">
@@ -37,9 +44,8 @@ export const Today = () => {
           <CustomButton
             clazz="btn-headToday"
             type="button"
-            onPressButton={(e) => {
-              e.stopPropagation();
-              setIsOpen(true);
+            onPressButton={(e: React.MouseEvent<HTMLButtonElement>) => {
+              onPressBtn(e);
             }}
           >
             <div className="today-view">
@@ -53,8 +59,8 @@ export const Today = () => {
             </div>
           </CustomButton>
         </div>
+        {isOpen && <View onPressBtn={onPressBtn} />}
       </section>
-      {isOpen && <View />}
     </>
   );
 };

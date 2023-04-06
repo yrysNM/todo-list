@@ -1,0 +1,52 @@
+.view {
+  width: 302px;
+  min-height: 179px;
+  padding: 4px 0;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, .8);
+  border: 1px solid #ddd;
+  position: absolute;
+  top: 40px;
+  right: -40px;
+  z-index: 100;
+
+  &-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 12px;
+    position: relative;
+  }
+}
+
+.title-view {
+  font-size: 1rem;
+}
+
+.searchInput {
+  padding: 4px 12px;
+  padding-left: 25px;
+  border-radius: 3px;
+  border: 1px solid transparent !important;
+
+  &-active {
+    border-color: #999 !important;
+    transition: border .3s ease;
+  }
+}
+
+.subLayout {
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+
+}
+
+.searchIcon {
+  position: absolute;
+  // top: 50%;
+  // transform: translateY(-50%);
+  left: 10px;
+}
