@@ -30,6 +30,7 @@ export const SortMethod = () => {
             changeMethodSort({
               method: "default",
               activite: true,
+              typeSort: null,
             })
           )
         }
@@ -42,6 +43,7 @@ export const SortMethod = () => {
             changeMethodSort({
               method: "name",
               activite: true,
+              typeSort: "asc",
             })
           )
         }
@@ -54,6 +56,7 @@ export const SortMethod = () => {
             changeMethodSort({
               method: "date",
               activite: true,
+              typeSort: "asc",
             })
           )
         }
@@ -68,7 +71,7 @@ interface ISortMethodLyout {
   isSort: boolean;
 }
 
-const LayoutSortMethod: React.FC<ISortMethodLyout> = ({
+export const LayoutSortMethod: React.FC<ISortMethodLyout> = ({
   text,
   onClickSort,
   isSort,

@@ -1,2 +1,2 @@
-import { SortMethod } from "./SortMethod";
-export { SortMethod };
+import { SortMethod, LayoutSortMethod } from "./SortMethod";
+export { SortMethod, LayoutSortMethod };

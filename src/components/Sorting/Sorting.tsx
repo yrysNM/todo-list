@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 import { SortMethod } from "../SortMethod";
-import { openSort } from "../../redux/tool/ViewSlice";
+import { openSort, toggleAscDesc } from "../../redux/tool/ViewSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
 import { CustomButton } from "../CustomButton";
@@ -50,6 +50,7 @@ const LayoutSort: React.FC<ILayoutSort> = ({
   sortMenuText,
 }) => {
   const dispatch = useAppDispatch();
+  const { isSort } = useAppSelector((state) => state.view);
 
   return (
     <div className="viewSort">
@@ -58,7 +59,8 @@ const LayoutSort: React.FC<ILayoutSort> = ({
         type="button"
         onPressButton={(e) => {
           e.stopPropagation();
-          dispatch(openSort(true));
+          dispatch(toggleAscDesc(false));
+          dispatch(openSort(!isSort));
         }}
       >
         <CustomSortBlock {...{ text, icon, sortMenuText }} />
