@@ -7,9 +7,10 @@ import { ItemBtns } from "../ItemBtns";
 import { ItemInfo } from "../ItemInfo";
 
 import "./listItems.scss";
+import { IArchiveItem } from "../../Interfaces";
 
 export const ListItems = () => {
-  const { items } = useAppSelector((state) => state.items);
+  const { items, searchItems } = useAppSelector((state) => state.items);
   const { methodSort } = useAppSelector((state) => state.view);
   const dispatch = useAppDispatch();
 
@@ -51,19 +52,27 @@ export const ListItems = () => {
     }
   }, [methodSort]);
 
+  const ShowItems = (itemList: IArchiveItem[]) => {
+    return (
+      <>
+        {itemList.map((item) => (
+          <ListItemsLayout key={item.id}>
+            <ItemInfo
+              content={item.content}
+              description={item.description}
+              is_completed={item.is_completed}
+              id={item.id}
+            />
+            <ItemBtns task_id={item.id} content={item.content} />
+          </ListItemsLayout>
+        ))}
+      </>
+    );
+  };
+
   return (
     <div>
-      {items.map((item) => (
-        <ListItemsLayout key={item.id}>
-          <ItemInfo
-            content={item.content}
-            description={item.description}
-            is_completed={item.is_completed}
-            id={item.id}
-          />
-          <ItemBtns task_id={item.id} content={item.content} />
-        </ListItemsLayout>
-      ))}
+      {searchItems?.length > 0 ? ShowItems(searchItems) : ShowItems(items)}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 
-import { fetchItems, setItems } from "../../redux/tool/ItemsSlice";
+import { setSearchItems } from "../../redux/tool/ItemsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
 import { Sorting } from "../Sorting";
@@ -22,14 +22,12 @@ export const View = ({ onPressBtn }: IView) => {
 
   function searchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    if (value.length === 0) {
-      dispatch(fetchItems());
-    }
+
     const searchItem = items.filter(
       (item) => item.content.indexOf(value) !== -1
     );
     setSearchVal(value);
-    dispatch(setItems(searchItem));
+    dispatch(setSearchItems(searchItem));
   }
 
   return (
