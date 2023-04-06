@@ -12,10 +12,12 @@ interface IItems {
   items: IArchiveItem[];
   completedItems: IArchiveCompleted;
   editItem: Partial<IArchiveItem | IArchiveItem>;
+  searchItems: IArchiveItem[];
 }
 
 const initialState: IItems = {
   items: [],
+  searchItems: [],
   completedItems: {
     completed_info: [],
     has_more: false,
@@ -95,6 +97,9 @@ const itemsSlice = createSlice({
   reducers: {
     setItems: (state, action: PayloadAction<IArchiveItem[]>) => {
       state.items = action.payload;
+    },
+    setSearchItems: (state, action: PayloadAction<IArchiveItem[]>) => {
+      state.searchItems = action.payload;
     },
     setItem: (state, action: PayloadAction<IArchiveItem | IArchiveItem>) => {
       // state.items.push(action.payload);
@@ -187,5 +192,6 @@ export const {
   setItem,
   updateItems,
   toggleComplteItems,
+  setSearchItems,
   updateCompletedItems,
 } = actions;

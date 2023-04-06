@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { closeSort, toggleAscDesc } from "../../redux/tool/ViewSlice";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import { CustomButton } from "../CustomButton";
 import { View } from "../view/View";
 
@@ -10,10 +12,16 @@ import { ReactComponent as ViewIcon } from "../../assets/icons/view.svg";
 export const Today = () => {
   const [date] = useState<Date>(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isSort, isAscDesc } = useAppSelector((state) => state.view);
   const days: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const handleHide = () => setIsOpen(false);
+    const handleHide = () => {
+      if (!isSort && !isAscDesc) {
+        setIsOpen(false);
+      }
+    };
 
     window.addEventListener("click", handleHide);
 
@@ -26,7 +34,8 @@ export const Today = () => {
     e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
   ) {
     e.stopPropagation();
-    setIsOpen(true);
+    dispatch(closeSort(false));
+    dispatch(toggleAscDesc(false));
   }
 
   return (
@@ -45,7 +54,8 @@ export const Today = () => {
             clazz="btn-headToday"
             type="button"
             onPressButton={(e: React.MouseEvent<HTMLButtonElement>) => {
-              onPressBtn(e);
+              e.stopPropagation();
+              setIsOpen(!isOpen);
             }}
           >
             <div className="today-view">

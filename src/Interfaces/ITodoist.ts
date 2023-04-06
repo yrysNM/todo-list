@@ -29,6 +29,7 @@ export interface IArchiveItem {
   id: string;
   is_deleted?: boolean;
   labels: string[];
+  created_at?: string;
   notes_count?: number;
   parent_id: null | string;
   priority: number;
