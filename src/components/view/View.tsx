@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classNames from "classnames";
 
 import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
+import { Sorting } from "../Sorting";
 
 import { ReactComponent as InfoIcon } from "../../assets/icons/info.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
@@ -35,7 +36,7 @@ export const View = ({ onPressBtn }: IView) => {
         </div>
       </ViewBlockLayout>
       <ViewBlockLayout title="Sort">
-        <div className="layout"></div>
+        <Sorting />
       </ViewBlockLayout>
     </div>
   );

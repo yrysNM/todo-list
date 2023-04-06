@@ -1,0 +1,37 @@
+.sortmethods {
+  min-height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-rows: repeat(3, 25px);
+  position: absolute;
+  bottom: -73px;
+  left: 180px;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, .8);
+  border: 1px solid #ddd;
+
+}
+
+.methodBlock {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    transition: background-color .3s ease;
+    background-color: rgba(238, 238, 238, .54);
+  }
+
+  .icon {
+    margin: 7px;
+  }
+
+  .titleM {
+    font-size: 13px;
+  }
+}
