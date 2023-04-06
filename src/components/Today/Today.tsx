@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
+import { closeSort, toggleAscDesc } from "../../redux/tool/ViewSlice";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import { CustomButton } from "../CustomButton";
-import { Modal } from "../Modal";
+import { View } from "../view/View";
 
 import "./today.scss";
 
@@ -10,7 +12,31 @@ import { ReactComponent as ViewIcon } from "../../assets/icons/view.svg";
 export const Today = () => {
   const [date] = useState<Date>(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isSort, isAscDesc } = useAppSelector((state) => state.view);
   const days: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const handleHide = () => {
+      if (!isSort && !isAscDesc) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleHide);
+
+    return () => {
+      window.removeEventListener("click", handleHide);
+    };
+  });
+
+  function onPressBtn(
+    e: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>
+  ) {
+    e.stopPropagation();
+    dispatch(closeSort(false));
+    dispatch(toggleAscDesc(false));
+  }
 
   return (
     <>
@@ -27,7 +53,10 @@ export const Today = () => {
           <CustomButton
             clazz="btn-headToday"
             type="button"
-            onPressButton={() => setIsOpen(true)}
+            onPressButton={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              setIsOpen(!isOpen);
+            }}
           >
             <div className="today-view">
               <span className="icon icon-disactive">
@@ -40,13 +69,8 @@ export const Today = () => {
             </div>
           </CustomButton>
         </div>
+        {isOpen && <View onPressBtn={onPressBtn} />}
       </section>
-
-      {isOpen && (
-        <Modal onClose={() => setIsOpen(false)}>
-          <h2>Test</h2>
-        </Modal>
-      )}
     </>
   );
 };

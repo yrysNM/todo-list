@@ -1,3 +1,3 @@
 export interface IGeneralChildren {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }

@@ -1,0 +1,40 @@
+.sortLayout {
+  padding: 4px 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+
+}
+
+.sortText {
+  margin-left: 5px;
+  font-size: 15px;
+}
+
+.subLayoutSort {
+  display: flex;
+  align-items: center;
+
+  &>.sub-title {
+    font-size: 15px;
+  }
+}
+
+.viewSort {
+  position: relative;
+
+  .btn:hover {
+    background-color: rgba(238, 238, 238, .34);
+  }
+}
+
+.btn-viewSort {
+  width: 100%;
+  color: #000;
+
+  .icon {
+    color: grey;
+  }
+}
