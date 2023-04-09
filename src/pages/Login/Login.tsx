@@ -11,8 +11,8 @@ const Login = () => {
   }
 
   return (
-    <AuthLayout image={TodoImg}>
-      <AuthTemplate isLogin={true} getValueInput={confirmLogin} />;
+    <AuthLayout image={TodoImg} isLogin={true}>
+      <AuthTemplate isLogin={true} getValueInput={confirmLogin} />
     </AuthLayout>
   );
 };
