@@ -29,3 +29,25 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.templateAnimation {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 80px;
+  width: 350px;
+  height: 350px;
+  z-index: -1;
+
+  @media(max-width: 1200px) {
+    left: 30px;
+    width: 250px;
+    height: 250px;
+  }
+
+  @media(max-width: 900px) {
+    display: none;
+  }
+
+
+}
