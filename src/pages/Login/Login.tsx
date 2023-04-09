@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { fetchUserLogin } from "../../redux/tool/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
@@ -17,6 +17,7 @@ const Login = () => {
   const { setToken } = useToken();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
   const { userLoading } = useAppSelector((state) => state.user);
 
   function confirmLogin(value: { email: string; password: string }) {
@@ -35,13 +36,13 @@ const Login = () => {
       return <Spinner />;
     } else if (userLoading === "error") {
       return <ErrorMessage errorText="Something went wrong" />;
+    } else if (pathname === "/login") {
+      return (
+        <AuthLayout image={TodoImg} isLogin={true}>
+          <AuthTemplate isLogin={true} getValueInput={confirmLogin} />
+        </AuthLayout>
+      );
     }
-
-    return (
-      <AuthLayout image={TodoImg} isLogin={true}>
-        <AuthTemplate isLogin={true} getValueInput={confirmLogin} />
-      </AuthLayout>
-    );
   };
 
   const render = initialContent();

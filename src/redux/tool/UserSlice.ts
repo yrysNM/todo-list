@@ -3,18 +3,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 
 interface IUser {
-  userData: {
-    full_name: string;
-    id: string;
-  };
+  full_name: string;
+  id: string;
   userLoading: "idle" | "loading" | "error";
 }
 
 const initialState: IUser = {
-  userData: {
-    full_name: "",
-    id: "",
-  },
+  full_name: "",
+  id: "",
   userLoading: "idle",
 };
 
@@ -42,7 +38,8 @@ const userSlice = createSlice({
         state.userLoading = "loading";
       })
       .addCase(fetchUserLogin.fulfilled, (state, action) => {
-        state.userData = action.payload.userData;
+        state.full_name = action.payload.full_name;
+        state.id = action.payload.id;
         state.userLoading = "idle";
       })
       .addCase(fetchUserLogin.rejected, (state) => {
