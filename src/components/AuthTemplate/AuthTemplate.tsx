@@ -24,7 +24,7 @@ interface IAuthTemplate {
   getValueInput: ({ email, password }: inputValues) => void;
 }
 
-const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
+export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
   const [isBlur, setIsBlur] = useState<blur>({
     active: false,
     typeInput: "",
@@ -156,7 +156,7 @@ const BottomTexts: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
       {isLogin && (
         <span
           className="sub-title navigateSpan"
-          onClick={() => navigate("/changePassword", { replace: true })}
+          onClick={() => navigate("/notReady", { replace: true })}
         >
           Forgot your password?
         </span>
@@ -212,5 +212,3 @@ const LoginLayout = ({
     </div>
   );
 };
-
-export { AuthTemplate };
