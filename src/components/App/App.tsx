@@ -25,7 +25,7 @@ export const App = (): JSX.Element => {
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<MainPage />} />
         </Route>
-        <Route path="login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </RouteLayout>
   );

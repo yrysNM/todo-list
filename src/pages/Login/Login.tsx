@@ -1,7 +1,9 @@
 import React from "react";
 
+import { LoginTemplate } from "../../components/LoginTemplate";
+
 const Login = () => {
-  return <div>Login</div>;
+  return <LoginTemplate />;
 };
 
 export { Login };
