@@ -6,6 +6,12 @@ import PrivateRoutes from "../../utils/PrivateRoutes";
 
 import "./app.scss";
 
+const Page404 = lazy(() =>
+  import("../../pages/404").then((page) => ({
+    default: page.Page404,
+  }))
+);
+
 const LoginPage = lazy(() =>
   import("../../pages/Login").then((module) => ({
     default: module.Login,
@@ -26,6 +32,7 @@ export const App = (): JSX.Element => {
           <Route path="/" element={<MainPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </RouteLayout>
   );
