@@ -2,10 +2,9 @@
   "git": {
     "deploymentEnabled": {
       "main": true,
-      "change/addTask": false, 
-      "change/readme": false, 
-      "change/completed": false,
-      "change/responsive": false,
+      "change/view": false, 
+      "change/userAuth": false,
+      "page/404": false,
       "dev": false
     }
   }
