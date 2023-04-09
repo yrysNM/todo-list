@@ -1,11 +1,11 @@
 import React from "react";
 import { useLottie } from "lottie-react";
 
-import animation404 from "./404an1.json";
+import defaultAnimation from "./default.json";
 
-const Page404 = () => {
+export const Default = () => {
   const options = {
-    animationData: animation404,
+    animationData: defaultAnimation,
     loop: true,
   };
 
@@ -24,9 +24,7 @@ const Page404 = () => {
   return (
     <div style={style.blockS}>
       <div style={{ height: "auto", width: 300 }}>{View}</div>
-      <p style={style.textError}>Error 404</p>
+      <p style={style.textError}>Sorry this page is not ready yet</p>
     </div>
   );
 };
-
-export { Page404 };
