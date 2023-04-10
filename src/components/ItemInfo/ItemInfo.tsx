@@ -48,8 +48,6 @@ export const ItemInfo = ({
         },
       });
     } else {
-      console.log("reopen");
-
       const filterCompleted = completedItems.items.filter(
         (item) => item.id !== id
       );

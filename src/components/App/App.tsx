@@ -24,7 +24,10 @@ export const App = (): JSX.Element => {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/changePassword" element={<DefaultPage />} />
+          <Route
+            path="/notReady"
+            element={<DefaultPage text="Sorry this page is not ready yet" />}
+          />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </RouteLayout>
