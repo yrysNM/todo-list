@@ -3,7 +3,7 @@ import { useLottie } from "lottie-react";
 
 import defaultAnimation from "./default.json";
 
-export const Default = () => {
+export const Default = ({ text }: { text: string }) => {
   const options = {
     animationData: defaultAnimation,
     loop: true,
@@ -24,7 +24,7 @@ export const Default = () => {
   return (
     <div style={style.blockS}>
       <div style={{ height: "auto", width: 300 }}>{View}</div>
-      <p style={style.textError}>Sorry this page is not ready yet</p>
+      <p style={style.textError}>{text}</p>
     </div>
   );
 };

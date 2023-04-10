@@ -65,8 +65,10 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
     initialValues: {
       email: "",
       password: "",
+      full_name: "",
     },
     validationSchema: Yup.object({
+      full_name: !isLogin && Yup.string().required("Obligatory field!"),
       email: Yup.string()
         .email("Wrong email address.")
         .required("Obligatory field!"),
@@ -88,7 +90,43 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
     <div className="auth-wrapper">
       <h3 className="authText">Simple Todo-list</h3>
 
-      <form className="form form-auth" onSubmit={formik.handleSubmit}>
+      <form
+        className="form form-auth"
+        onSubmit={formik.handleSubmit}
+        style={{
+          gridTemplate: isLogin
+            ? "repeat(2, 60px) 48px / minmax(250px, 400px)"
+            : "repeat(3, 60px) 48px / minmax(250px, 400px)",
+        }}
+      >
+        {!isLogin && (
+          <LoginLayout
+            labelText="Full name"
+            htmlFor="full_name"
+            isBlur={isBlur}
+          >
+            <input
+              name="full_name"
+              id="full_name"
+              className="input"
+              type="text"
+              autoComplete="on"
+              value={formik.values.full_name}
+              onFocus={() =>
+                setIsBlur({ active: true, typeInput: "full_name" })
+              }
+              onBlur={(e) => {
+                formik.handleBlur(e);
+                setIsBlur({ active: false, typeInput: "full_name" });
+              }}
+              onChange={formik.handleChange}
+              placeholder="Enter full name"
+            />
+            {formik.errors.full_name && formik.touched.full_name ? (
+              <p className="sub-title errorText">{formik.errors.full_name}</p>
+            ) : null}
+          </LoginLayout>
+        )}
         <LoginLayout labelText="Email" htmlFor="email" isBlur={isBlur}>
           <input
             name="email"
