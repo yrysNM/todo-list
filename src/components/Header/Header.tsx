@@ -26,7 +26,7 @@ const Header = () => {
       <div className="userInfo">
         <span
           className="icon logOut"
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", marginTop: 5 }}
           onClick={() => {
             navigate("/notReady");
           }}

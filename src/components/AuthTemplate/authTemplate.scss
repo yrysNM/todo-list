@@ -63,7 +63,7 @@
 
 .btn-form {
   width: 100%;
-  background-color: #db4c3f;
+  background-color: #db4c3f !important;
   text-align: center;
   padding: 0 16px;
   border-radius: 8px;
@@ -71,7 +71,7 @@
 
   &:hover {
     transition: background-color .3s ease-in-out;
-    background-color: #C53C27;
+    background-color: #C53C27 !important;
   }
 }
 
