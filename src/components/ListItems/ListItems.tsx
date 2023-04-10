@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { fetchItems, setSearchItems } from "../../redux/tool/ItemsSlice";
+import { setSearchItems } from "../../redux/tool/ItemsSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import { ListItemsLayout } from "../layouts/ListItemsLayout";
 import { ItemBtns } from "../ItemBtns";
@@ -13,12 +13,6 @@ export const ListItems = () => {
   const { items, searchItems } = useAppSelector((state) => state.items);
   const { methodSort } = useAppSelector((state) => state.view);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchItems());
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (methodSort.method === "name") {

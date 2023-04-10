@@ -16,7 +16,7 @@ export const ErrorMessage = ({ errorText }: { errorText: string }) => {
   return (
     <div className="errorMessage">
       <div className="animationBlock">{View}</div>
-      <p className="sub-title errorText">errorText</p>
+      <p className="sub-title errorText">{errorText}</p>
     </div>
   );
 };
