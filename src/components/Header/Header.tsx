@@ -21,7 +21,9 @@ const Header = () => {
       <h1 className="title title-600">Simple Todo-list</h1>
 
       <div className="userInfo">
-        <span className="title-500">{full_name}</span>
+        <span className="title title-500">
+          {full_name.length > 5 ? `${full_name.slice(0, 5)}...` : full_name}
+        </span>
 
         <span
           className="icon logOut"
