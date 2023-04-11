@@ -1,16 +1,13 @@
 import React from "react";
-import Lottie, { useLottie } from "lottie-react";
+import { useLottie } from "lottie-react";
 import { useNavigate } from "react-router-dom";
 
-import { useToken } from "../../hooks/token.hook";
 import { useAppSelector } from "../../hooks/redux.hook";
 
-import loqOutAnimation from "../../assets/json/logout.json";
 import porfileAnimation from "../../assets/json/profile.json";
 import "./header.scss";
 
 const Header = () => {
-  const { setToken } = useToken();
   const navigate = useNavigate();
   const { full_name } = useAppSelector((state) => state.user);
   const options = {
@@ -24,6 +21,10 @@ const Header = () => {
       <h1 className="title title-600">Simple Todo-list</h1>
 
       <div className="userInfo">
+        <span className="title title-500">
+          {full_name.length > 5 ? `${full_name.slice(0, 5)}...` : full_name}
+        </span>
+
         <span
           className="icon logOut"
           style={{ cursor: "pointer", marginTop: 5 }}
@@ -32,19 +33,6 @@ const Header = () => {
           }}
         >
           {View}
-        </span>
-
-        <span className="title-500">{full_name}</span>
-
-        <span
-          className="icon"
-          style={{ cursor: "pointer", marginLeft: 20 }}
-          onClick={() => {
-            setToken("");
-            navigate("/login", { replace: false });
-          }}
-        >
-          <Lottie animationData={loqOutAnimation} className="logOut" />
         </span>
       </div>
     </header>

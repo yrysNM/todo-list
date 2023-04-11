@@ -12,6 +12,7 @@ import { ErrorMessage } from "../../components/ErrorMessage";
 import { fetchInitialUser } from "../../redux/tool/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { fetchCompletedItems, fetchItems } from "../../redux/tool/ItemsSlice";
+import { Logout } from "../../components/Logout";
 
 const Main = () => {
   const { items, completedItems } = useAppSelector((state) => state.items);
@@ -42,6 +43,7 @@ const Main = () => {
             <DefaultPage text="You don't have a  task yet" />
           </>
         )}
+        <Logout />
       </PageLayout>
     </InitialComponent>
   );
