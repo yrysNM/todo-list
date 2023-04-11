@@ -8,6 +8,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+
+  @media(max-width: 797px) {
+    .title {
+      font-size: 21px;
+    }
+  }
 }
 
 .userInfo {

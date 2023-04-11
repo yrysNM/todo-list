@@ -1,0 +1,12 @@
+.logout {
+  text-decoration: underline;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
