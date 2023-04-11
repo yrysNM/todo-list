@@ -31,11 +31,15 @@ export const fetchCompletedItems = createAsyncThunk(
   "items/fetchCompletedItems",
   async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL_SYNC}/archive/items?project_id=${process.env.REACT_APP_PROJECT_ID}&limit=20`,
+      `${
+        process.env.REACT_APP_BASE_URL_SYNC
+      }/archive/items?project_id=${JSON.parse(
+        localStorage.getItem("project_id")
+      )}&limit=20`,
       {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
         },
       }
     );

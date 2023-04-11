@@ -1,0 +1,14 @@
+.errorMessage {
+  display: grid;
+  place-items: center;
+  height: 50vh;
+
+  .sub-title {
+    margin-top: 20px;
+  }
+}
+
+.animationBlock {
+  width: 150px;
+  height: 150px;
+}

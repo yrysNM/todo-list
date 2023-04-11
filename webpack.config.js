@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -10,39 +10,34 @@ module.exports = {
   devtool: "inline-source-map",
   output: {
     path: path.join(__dirname, "/dist"),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: "/",
   },
   watch: true,
   devServer: {
     static: __dirname + "/public/",
     port: 3033, //  change the port
+    historyApiFallback: true,
   },
   module: {
     rules: [
       {
         test: /\.(jsx|js)?$/i,
         exclude: "/node_modules",
-        loader: "babel-loader"
+        loader: "babel-loader",
       },
       {
         test: /\.(tsx|ts)?$/i,
         exclude: "/node_modules",
-        use: "ts-loader"
+        use: "ts-loader",
       },
       {
         test: /\.s[ac]ss?$/i,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader",
-        ]
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.svg$/,
-        use: [
-          "@svgr/webpack",
-          "svg-url-loader"
-        ],
+        use: ["@svgr/webpack", "svg-url-loader"],
       },
       {
         test: /\.(png|jpe|svg?g|gif|mp3|webp)$/i,
@@ -51,19 +46,19 @@ module.exports = {
             loader: "file-loader",
           },
         ],
-      }
-    ]
+      },
+    ],
   },
   resolve: {
-    extensions: ['.jsx', '.tsx', '.js', ".ts"],
+    extensions: [".jsx", ".tsx", ".js", ".ts"],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: __dirname + "/public/index.html"
+      template: __dirname + "/public/index.html",
     }),
     new webpack.ProvidePlugin({
-      "React": "react",
+      React: "react",
     }),
     new Dotenv(),
-  ]
-}
+  ],
+};

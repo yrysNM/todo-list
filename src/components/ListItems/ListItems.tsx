@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { fetchItems, setItems } from "../../redux/tool/ItemsSlice";
+import { setSearchItems } from "../../redux/tool/ItemsSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import { ListItemsLayout } from "../layouts/ListItemsLayout";
 import { ItemBtns } from "../ItemBtns";
@@ -15,25 +15,19 @@ export const ListItems = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchItems());
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (methodSort.method === "name") {
       if (methodSort.typeSort === "asc") {
         const sortName = [...items].sort((a, b) =>
           a.content.toLocaleLowerCase() > b.content.toLocaleLowerCase() ? 1 : -1
         );
 
-        dispatch(setItems(sortName));
+        dispatch(setSearchItems(sortName));
       } else if (methodSort.typeSort === "desc") {
         const sortName = [...items].sort((a, b) =>
           a.content.toLocaleLowerCase() > b.content.toLocaleLowerCase() ? -1 : 1
         );
 
-        dispatch(setItems(sortName));
+        dispatch(setSearchItems(sortName));
       }
     } else if (methodSort.method === "date") {
       if (methodSort.typeSort === "asc") {
@@ -41,14 +35,16 @@ export const ListItems = () => {
           (a, b) => +new Date(a.created_at) - +new Date(b.created_at)
         );
 
-        dispatch(setItems(sortName));
+        dispatch(setSearchItems(sortName));
       } else if (methodSort.typeSort === "desc") {
         const sortName = [...items].sort(
           (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
         );
 
-        dispatch(setItems(sortName));
+        dispatch(setSearchItems(sortName));
       }
+    } else {
+      dispatch(setSearchItems([]));
     }
   }, [methodSort]);
 
