@@ -1,18 +1,30 @@
 .logout {
-  text-decoration: underline;
   cursor: pointer;
+  font-size: 21px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   position: absolute;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
+  top: 7px;
+  z-index: 1000;
+
   transition: color 0.3s ease;
 
   &:hover {
     transition: color 0.3s ease;
     color: grey;
+  }
+
+  @media(max-width: 797px) {
+    text-decoration: underline;
+
+    font-size: 17px;
+    right: auto;
+    top: auto;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }

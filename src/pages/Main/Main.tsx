@@ -40,11 +40,11 @@ const Main = () => {
         ) : (
           <>
             <AddTask />
-            <DefaultPage text="You don't have a  task yet" />
+            <DefaultPage text="You don't have a task yet" />
           </>
         )}
-        <Logout />
       </PageLayout>
+      <Logout />
     </InitialComponent>
   );
 };
