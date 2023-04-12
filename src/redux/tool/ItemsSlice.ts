@@ -9,6 +9,7 @@ import {
 } from "../../Interfaces";
 
 interface IItems {
+  searchValue: string;
   items: IArchiveItem[];
   completedItems: IArchiveCompleted;
   editItem: Partial<IArchiveItem | IArchiveItem>;
@@ -16,6 +17,7 @@ interface IItems {
 }
 
 const initialState: IItems = {
+  searchValue: "",
   items: [],
   searchItems: [],
   completedItems: {
@@ -109,6 +111,9 @@ const itemsSlice = createSlice({
       // state.items.push(action.payload);
       state.editItem = action.payload;
     },
+    searchValueAction: (state, action: PayloadAction<string>) => {
+      state.searchValue = action.payload;
+    },
     updateItems: (
       state,
       action: PayloadAction<{ id: string; is_completed: boolean }>
@@ -192,6 +197,7 @@ export default reducer;
 export const selectItems = (state: RootState) => state.items.items;
 
 export const {
+  searchValueAction,
   setItems,
   setItem,
   updateItems,

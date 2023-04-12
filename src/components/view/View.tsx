@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 
-import { setSearchItems } from "../../redux/tool/ItemsSlice";
+import { setSearchItems, searchValueAction } from "../../redux/tool/ItemsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
 import { Sorting } from "../Sorting";
@@ -16,9 +16,9 @@ interface IView {
 
 export const View = ({ onPressBtn }: IView) => {
   const [onBlurFocus, setOnBlurFocus] = useState<boolean>(false);
-  const [searchVal, setSearchVal] = useState<string>("");
+  // const [searchVal, setSearchVal] = useState<string>("");
   const dispatch = useAppDispatch();
-  const { items } = useAppSelector((state) => state.items);
+  const { items, searchValue } = useAppSelector((state) => state.items);
 
   function searchChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -26,7 +26,7 @@ export const View = ({ onPressBtn }: IView) => {
     const searchItem = items.filter(
       (item) => item.content.indexOf(value) !== -1
     );
-    setSearchVal(value);
+    dispatch(searchValueAction(value));
     dispatch(setSearchItems(searchItem));
   }
 
@@ -41,7 +41,7 @@ export const View = ({ onPressBtn }: IView) => {
           <input
             onBlur={() => setOnBlurFocus(false)}
             onFocus={() => setOnBlurFocus(true)}
-            value={searchVal}
+            value={searchValue}
             onChange={searchChange}
             type="search"
             name="search"
