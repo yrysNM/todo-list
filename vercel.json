@@ -3,7 +3,7 @@
     "deploymentEnabled": {
       "main": true,
       "change/view": false, 
-      "change/userAuth": false,
+      "change/userProfile": false,
       "page/404": false,
       "dev": false
     }
