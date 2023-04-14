@@ -6,7 +6,11 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 
-import { setItems, setSearchItems } from "../../redux/tool/ItemsSlice";
+import {
+  setItems,
+  setSearchItems,
+  // fetchReorderItems,
+} from "../../redux/tool/ItemsSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
 import { ListItemsLayout } from "../layouts/ListItemsLayout";
 import { ItemBtns } from "../ItemBtns";
@@ -26,6 +30,16 @@ export const ListItems = () => {
     const itemsList = Array.from(items);
     const [reorderedItem] = itemsList.splice(result.source.index, 1);
     itemsList.splice(result.destination.index, 0, reorderedItem);
+
+    //change items info
+    // const reorderItem: { id: string; child_order: number }[] = [
+    //   {
+    //     id: reorderedItem.id,
+    //     child_order: reorderedItem.order,
+    //   },
+    // ];
+
+    // dispatch(fetchReorderItems(reorderItem));
 
     dispatch(setItems(itemsList));
   };

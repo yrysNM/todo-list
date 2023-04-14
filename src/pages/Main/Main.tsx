@@ -16,7 +16,7 @@ import { Logout } from "../../components/Logout";
 
 const Main = () => {
   const { items, completedItems } = useAppSelector((state) => state.items);
-  const { id } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.user.user);
 
   const dispatch = useAppDispatch();
 

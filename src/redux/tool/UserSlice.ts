@@ -2,26 +2,43 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useHttp } from "../../hooks/http.hook";
 
-interface IUser {
-  full_name: string;
-  id: string;
-  inbox_project_id: string;
+interface InitialTypeUser {
+  user: {
+    email: string;
+    full_name: string;
+    id: string;
+    image_id: string | null;
+    joined_at: string;
+    premium_status: string;
+    inbox_project_id: string;
+  };
+}
+
+interface IUser extends InitialTypeUser {
   userLoading: "idle" | "loading" | "error";
 }
 
 const initialState: IUser = {
-  full_name: "",
-  id: "",
-  inbox_project_id: "",
+  user: {
+    full_name: "",
+    id: "",
+    email: "",
+    image_id: null,
+    joined_at: "",
+    premium_status: "",
+    inbox_project_id: "",
+  },
   userLoading: "idle",
 };
 
-type initialTypeUser = {
-  user: {
-    full_name: string;
-    id: string;
-    inbox_project_id: string;
-  };
+type typeUser = {
+  email: string;
+  full_name: string;
+  id: string;
+  image_id: string | null;
+  joined_at: string;
+  premium_status: string;
+  inbox_project_id: string;
 };
 
 type valueUserType = {
@@ -33,7 +50,7 @@ export const fetchUserLogin = createAsyncThunk(
   "user/fetchUserLogin",
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
-    return await request<IUser>({
+    return await request<typeUser>({
       url: `https://todoist.com/API/v9.0/user/login`,
       method: "POST",
       body: JSON.stringify({
@@ -48,7 +65,7 @@ export const fetchInitialUser = createAsyncThunk(
   async () => {
     const { request } = useHttp();
 
-    return await request<initialTypeUser>({
+    return await request<InitialTypeUser>({
       url: `https://todoist.com/API/v9.0/sync`,
       method: "POST",
       body: JSON.stringify({
@@ -67,7 +84,7 @@ export const fetchRegisterUser = createAsyncThunk(
   "user/fetchRegisterUser",
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
-    return await request<IUser>({
+    return await request<typeUser>({
       url: `${process.env.REACT_APP_BASE_URL_SYNC}/user/register`,
       method: "POST",
       body: JSON.stringify({
@@ -87,9 +104,7 @@ const userSlice = createSlice({
         state.userLoading = "loading";
       })
       .addCase(fetchUserLogin.fulfilled, (state, action) => {
-        state.full_name = action.payload.full_name;
-        state.inbox_project_id = action.payload.inbox_project_id;
-        state.id = action.payload.id;
+        state.user = action.payload;
         state.userLoading = "idle";
 
         localStorage.setItem("project_id", action.payload.inbox_project_id);
@@ -102,9 +117,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchInitialUser.fulfilled, (state, action) => {
         state.userLoading = "idle";
-        state.id = action.payload.user.id;
-        state.full_name = action.payload.user.full_name;
-        state.inbox_project_id = action.payload.user.inbox_project_id;
+        state.user = action.payload.user;
 
         localStorage.setItem(
           "project_id",
@@ -118,10 +131,8 @@ const userSlice = createSlice({
         state.userLoading = "loading";
       })
       .addCase(fetchRegisterUser.fulfilled, (state, action) => {
-        state.full_name = action.payload.full_name;
-        state.id = action.payload.id;
+        state.user = action.payload;
         state.userLoading = "idle";
-        state.inbox_project_id = action.payload.inbox_project_id;
 
         localStorage.setItem("project_id", action.payload.inbox_project_id);
       })

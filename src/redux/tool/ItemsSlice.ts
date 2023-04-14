@@ -97,6 +97,31 @@ export const fetchUpdateItem = createAsyncThunk(
   }
 );
 
+/**
+ * items change
+ */
+export const fetchReorderItems = createAsyncThunk(
+  "items/fetchReorderItems",
+  async (data: { id: string; child_order: number }[]) => {
+    const { request } = useHttp();
+    return await request<IArchiveItem>({
+      url: `${process.env.REACT_APP_BASE_URL_SYNC}/sync`,
+      method: "POST",
+      body: JSON.stringify({
+        commands: [
+          {
+            type: "item_reorder",
+            uuid: "9247faf3-d83a-9d8c-2773-b5054e3ee20b",
+            args: {
+              items: data,
+            },
+          },
+        ],
+      }),
+    });
+  }
+);
+
 const itemsSlice = createSlice({
   name: "items",
   initialState,

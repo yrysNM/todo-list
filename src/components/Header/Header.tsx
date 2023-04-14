@@ -9,7 +9,7 @@ import "./header.scss";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { full_name } = useAppSelector((state) => state.user);
+  const { full_name } = useAppSelector((state) => state.user.user);
   const options = {
     animationData: porfileAnimation,
     loop: false,
@@ -22,7 +22,9 @@ const Header = () => {
 
       <div className="userInfo">
         <span className="title title-500">
-          {full_name.length > 5 ? `${full_name.slice(0, 5)}...` : full_name}
+          {full_name.length > 5 && window.innerWidth < 575
+            ? `${full_name.slice(0, 5)}...`
+            : full_name}
         </span>
 
         <span
