@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import { useHttp } from "../../hooks/http.hook";
 
@@ -31,7 +31,7 @@ const initialState: IUser = {
   userLoading: "idle",
 };
 
-type typeUser = {
+export type typeUser = {
   email: string;
   full_name: string;
   id: string;
@@ -97,7 +97,11 @@ export const fetchRegisterUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUser: (state, action: PayloadAction<typeUser>) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserLogin.pending, (state) => {
