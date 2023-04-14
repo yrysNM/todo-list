@@ -65,7 +65,7 @@ const InitialComponent = ({ children }: IGeneralChildren) => {
     case "error":
       return <ErrorMessage errorText="Something went wrong" />;
     case "idle":
-      return <>{children}</>;
+      return <div style={{ position: "relative" }}>{children}</div>;
     default:
       return null;
   }

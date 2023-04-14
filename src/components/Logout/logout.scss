@@ -6,8 +6,8 @@
   align-items: center;
   gap: 10px;
   position: absolute;
-  right: 0;
-  top: 25px;
+  right: 0px;
+  top: 5px;
   z-index: 1000;
 
   transition: color 0.3s ease;
@@ -23,7 +23,7 @@
     font-size: 17px;
     right: auto;
     top: auto;
-    bottom: 165px;
+    bottom: -90px;
     left: 50%;
     transform: translateX(-50%);
   }
