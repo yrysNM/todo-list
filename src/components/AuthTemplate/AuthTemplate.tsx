@@ -77,7 +77,7 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
         .min(8, "At least 8 characters.")
         .matches(
           // eslint-disable-next-line no-useless-escape
-          /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+          /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/,
           "Must consist of Latin letters, special characters, and single digits."
         ),
     }),

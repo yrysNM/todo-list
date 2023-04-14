@@ -12,9 +12,20 @@ import { ErrorMessage } from "../../components/ErrorMessage";
 import { fetchInitialUser } from "../../redux/tool/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { fetchCompletedItems, fetchItems } from "../../redux/tool/ItemsSlice";
+import { Logout } from "../../components/Logout";
 
 const Main = () => {
   const { items, completedItems } = useAppSelector((state) => state.items);
+  const { id } = useAppSelector((state) => state.user.user);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (id.length <= 0) {
+      dispatch(fetchInitialUser());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <InitialComponent>
@@ -29,10 +40,11 @@ const Main = () => {
         ) : (
           <>
             <AddTask />
-            <DefaultPage text="You don't have a  task yet" />
+            <DefaultPage text="You don't have a task yet" />
           </>
         )}
       </PageLayout>
+      <Logout />
     </InitialComponent>
   );
 };
@@ -40,14 +52,6 @@ const Main = () => {
 const InitialComponent = ({ children }: IGeneralChildren) => {
   const { userLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const { id } = useAppSelector((state) => state.user);
-
-  useEffect(() => {
-    if (id.length <= 0) {
-      dispatch(fetchInitialUser());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     dispatch(fetchItems());

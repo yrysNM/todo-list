@@ -40,6 +40,8 @@
   z-index: -1;
 
   @media(max-width: 1200px) {
+    top: auto;
+
     left: 30px;
     width: 250px;
     height: 250px;

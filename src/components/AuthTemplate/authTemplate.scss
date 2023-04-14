@@ -55,6 +55,10 @@
   display: grid;
   justify-content: center;
   grid-template: repeat(2, 60px) 48px / minmax(250px, 400px);
+
+  @media(max-width: 797px) {
+    gap: 30px;
+  }
 }
 
 .bottomTexts {
@@ -63,7 +67,7 @@
 
 .btn-form {
   width: 100%;
-  background-color: #db4c3f;
+  background-color: #db4c3f !important;
   text-align: center;
   padding: 0 16px;
   border-radius: 8px;
@@ -71,7 +75,7 @@
 
   &:hover {
     transition: background-color .3s ease-in-out;
-    background-color: #C53C27;
+    background-color: #C53C27 !important;
   }
 }
 

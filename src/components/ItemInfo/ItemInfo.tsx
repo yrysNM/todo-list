@@ -20,7 +20,9 @@ export const ItemInfo = ({
   is_completed,
   id,
 }: IViewComponent) => {
-  const { items, completedItems } = useAppSelector((state) => state.items);
+  const { items, completedItems, searchValue } = useAppSelector(
+    (state) => state.items
+  );
   const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
   const dispatch = useAppDispatch();
 
@@ -71,6 +73,18 @@ export const ItemInfo = ({
     }
   };
 
+  const RenderHTML = (props: { HTML: string }) => (
+    <span dangerouslySetInnerHTML={{ __html: props.HTML }}></span>
+  );
+
+  const spilitMatchedText = (str: string, content: string) => {
+    const regExp = new RegExp(str, "gi");
+    return content.replace(
+      regExp,
+      (match) => `<span style="color: red;">${match}</span>`
+    );
+  };
+
   return (
     <div className="item-info">
       <span
@@ -90,7 +104,8 @@ export const ItemInfo = ({
             "title-done": is_completed,
           })}
         >
-          {content}
+          <RenderHTML HTML={spilitMatchedText(searchValue, content)} />
+          {/* {content} */}
         </p>
         <p
           className={classNames("sub-title", {

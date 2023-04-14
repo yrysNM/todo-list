@@ -8,6 +8,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #fff;
+
+
+  @media(max-width: 797px) {
+    .title {
+      font-size: 21px;
+
+      &-500 {
+        font-size: 17px;
+      }
+    }
+  }
 }
 
 .userInfo {
@@ -15,6 +27,22 @@
   align-items: center;
   flex-direction: row;
   gap: 15px;
+  margin-right: 130px;
+
+  @media(max-width: 797px) {
+    margin-right: 0;
+  }
+
+  &>.title {
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: grey;
+      transition: color 0.3s ease;
+    }
+  }
 }
 
 .logOut {

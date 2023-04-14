@@ -36,7 +36,7 @@ const Login = () => {
       return <Spinner />;
     } else if (userLoading === "error") {
       return <ErrorMessage errorText="Something went wrong" />;
-    } else if (pathname === "/login") {
+    } else if (pathname === "/login" && userLoading === "idle") {
       return (
         <AuthLayout image={TodoImg} isLogin={true}>
           <AuthTemplate isLogin={true} getValueInput={confirmLogin} />

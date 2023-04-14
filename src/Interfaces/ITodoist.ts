@@ -38,6 +38,7 @@ export interface IArchiveItem {
   section_id: null | string;
   sync_id?: null | string;
   user_id?: string;
+  order: number;
 }
 
 export interface IArchiveCompleted {
