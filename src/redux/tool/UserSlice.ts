@@ -85,7 +85,7 @@ export const fetchRegisterUser = createAsyncThunk(
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
     return await request<typeUser>({
-      url: `${process.env.REACT_APP_BASE_URL_SYNC}/user/register`,
+      url: `${import.meta.env.VITE_APP_BASE_URL_SYNC}/user/register`,
       method: "POST",
       body: JSON.stringify({
         ...valueUser,
