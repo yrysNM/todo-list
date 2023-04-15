@@ -6,11 +6,17 @@
 }
 
 .inputName {
+
   &::placeholder {
     font-size: 15px;
     font-weight: 600;
     line-height: 25px;
 
+  }
+
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.2);
+    transition: border-color .3s ease;
   }
 }
 
@@ -21,6 +27,11 @@
     font-size: 13px;
     font-weight: 400;
 
+  }
+
+  &:focus {
+    border-color: rgba(0, 0, 0, .2);
+    transition: border-color .3s ease;
   }
 }
 

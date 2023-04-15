@@ -5,11 +5,6 @@
   font-size: 14px;
   border-bottom: 1px solid transparent;
   transition: border-color .3s ease;
-
-  &:focus {
-    transition: border-color .3s ease;
-    border-color: gray;
-  }
 }
 
 .overlay {
@@ -41,7 +36,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 80px;
+  left: 0;
   width: 350px;
   height: 350px;
   z-index: -1;
@@ -49,7 +44,7 @@
   @media(max-width: 1200px) {
     top: auto;
 
-    left: 30px;
+    left: -80px;
     width: 250px;
     height: 250px;
   }

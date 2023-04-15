@@ -24,6 +24,7 @@ const Main = () => {
     if (id.length <= 0) {
       dispatch(fetchInitialUser());
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

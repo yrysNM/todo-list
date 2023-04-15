@@ -7,7 +7,7 @@ import user from "./tool/UserSlice";
 const store = configureStore({
   reducer: { items, isCompletedBtn, view, user },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: import.meta.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;
