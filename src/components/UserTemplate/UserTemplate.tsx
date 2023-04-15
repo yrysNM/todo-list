@@ -6,6 +6,10 @@ import { typeUser } from "../../redux/tool/UserSlice";
 
 import porfileAnimation from "../../assets/json/profile.json";
 import "./userTemplate.scss";
+<<<<<<< Updated upstream
+=======
+import { CustomButton } from "../CustomButton";
+>>>>>>> Stashed changes
 
 export const UserTemplate = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -32,7 +36,20 @@ export const UserTemplate = () => {
 
   return (
     <div className="userInformation">
+<<<<<<< Updated upstream
       <div className="userAvatar">{View}</div>
+=======
+      <div className="userAvatar-block">
+        <span className="userAvatar">{View}</span>
+        <CustomButton
+          clazz="btn-uploadUserAvatar"
+          type="button"
+          onPressButton={() => console.log("upload image")}
+        >
+          <p className="title">Upload image</p>
+        </CustomButton>
+      </div>
+>>>>>>> Stashed changes
       <div className="userInformation_texts">
         <form className="form form-user">
           <input
