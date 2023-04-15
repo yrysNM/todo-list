@@ -3,6 +3,13 @@
   border: none;
   width: 100%;
   font-size: 14px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s ease;
+
+  &:focus {
+    transition: border-color .3s ease;
+    border-color: gray;
+  }
 }
 
 .overlay {
