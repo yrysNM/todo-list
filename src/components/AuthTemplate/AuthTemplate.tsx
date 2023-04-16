@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import classNames from "classnames";
 
 import { CustomButton } from "../CustomButton";
-import { IGeneralChildren } from "../../Interfaces/IGeneralComponent";
+import { CustomInputLayout } from "../CustomInputLayout";
 
 import "./authTemplate.scss";
 
@@ -100,7 +99,7 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
         }}
       >
         {!isLogin && (
-          <LoginLayout
+          <CustomInputLayout
             labelText="Full name"
             htmlFor="full_name"
             isBlur={isBlur}
@@ -125,9 +124,9 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
             {formik.errors.full_name && formik.touched.full_name ? (
               <p className="sub-title errorText">{formik.errors.full_name}</p>
             ) : null}
-          </LoginLayout>
+          </CustomInputLayout>
         )}
-        <LoginLayout labelText="Email" htmlFor="email" isBlur={isBlur}>
+        <CustomInputLayout labelText="Email" htmlFor="email" isBlur={isBlur}>
           <input
             name="email"
             id="email"
@@ -145,9 +144,13 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
           {formik.errors.email && formik.touched.email ? (
             <p className="sub-title errorText">{formik.errors.email}</p>
           ) : null}
-        </LoginLayout>
+        </CustomInputLayout>
 
-        <LoginLayout labelText="Password" htmlFor="password" isBlur={isBlur}>
+        <CustomInputLayout
+          labelText="Password"
+          htmlFor="password"
+          isBlur={isBlur}
+        >
           <input
             name="password"
             id="password"
@@ -166,7 +169,7 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
           {formik.errors.password && formik.touched.password ? (
             <p className="sub-title errorText">{formik.errors.password}</p>
           ) : null}
-        </LoginLayout>
+        </CustomInputLayout>
 
         <CustomButton
           type="submit"
@@ -221,32 +224,6 @@ const BottomTexts: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
           </span>
         </p>
       )}
-    </div>
-  );
-};
-
-interface ILoginLayout extends IGeneralChildren {
-  labelText: string;
-  htmlFor: string;
-  isBlur: blur;
-}
-
-const LoginLayout = ({
-  labelText,
-  htmlFor,
-  isBlur,
-  children,
-}: ILoginLayout) => {
-  return (
-    <div
-      className={classNames("inputLabel", {
-        "inputLabel-active": isBlur.active && htmlFor === isBlur.typeInput,
-      })}
-    >
-      <label htmlFor={htmlFor} className="title-500 label">
-        {labelText}
-      </label>
-      {children}
     </div>
   );
 };

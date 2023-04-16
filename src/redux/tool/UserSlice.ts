@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import { useHttp } from "../../hooks/http.hook";
 
@@ -31,7 +31,7 @@ const initialState: IUser = {
   userLoading: "idle",
 };
 
-type typeUser = {
+export type typeUser = {
   email: string;
   full_name: string;
   id: string;
@@ -85,7 +85,7 @@ export const fetchRegisterUser = createAsyncThunk(
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
     return await request<typeUser>({
-      url: `${process.env.REACT_APP_BASE_URL_SYNC}/user/register`,
+      url: `${import.meta.env.VITE_APP_BASE_URL_SYNC}/user/register`,
       method: "POST",
       body: JSON.stringify({
         ...valueUser,
@@ -97,7 +97,14 @@ export const fetchRegisterUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUserValue: (state, action: PayloadAction<Partial<typeUser>>) => {
+      // state.user[keyof typeof action.payload] = action.payload;
+      const objK = Object.keys(action.payload);
+      state.user[objK[0] as keyof typeof state.user] =
+        action.payload[objK[0] as keyof typeof state.user];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserLogin.pending, (state) => {
@@ -142,6 +149,8 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer } = userSlice;
+const { actions, reducer } = userSlice;
 
 export default reducer;
+
+export const { updateUserValue } = actions;

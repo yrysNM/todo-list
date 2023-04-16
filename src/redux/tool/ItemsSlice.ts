@@ -34,7 +34,7 @@ export const fetchCompletedItems = createAsyncThunk(
   async () => {
     const response = await fetch(
       `${
-        process.env.REACT_APP_BASE_URL_SYNC
+        import.meta.env.VITE_APP_BASE_URL_SYNC
       }/archive/items?project_id=${JSON.parse(
         localStorage.getItem("project_id")
       )}&limit=20`,
@@ -53,7 +53,7 @@ export const fetchCompletedItems = createAsyncThunk(
 export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
   const { request } = useHttp();
   return await request<IArchiveItem[]>({
-    url: `${process.env.REACT_APP_BASE_URL}/tasks`,
+    url: `${import.meta.env.VITE_APP_BASE_URL}/tasks`,
     method: "GET",
   });
 });
@@ -63,7 +63,7 @@ export const fetchItem = createAsyncThunk(
   async (task_id: string) => {
     const { request } = useHttp();
     return await request<IArchiveItem>({
-      url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
+      url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`,
       method: "GET",
     });
   }
@@ -74,7 +74,7 @@ export const fetchAddItem = createAsyncThunk(
   async ({ content, description, due_lang }: ITodoistMethod) => {
     const { request } = useHttp();
     return await request<IArchiveItem>({
-      url: `${process.env.REACT_APP_BASE_URL}/tasks/`,
+      url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/`,
       method: "POST",
       body: JSON.stringify({
         content,
@@ -90,7 +90,7 @@ export const fetchUpdateItem = createAsyncThunk(
   async ({ task_id, content, description }: ITodoistMethod) => {
     const { request } = useHttp();
     return await request<IArchiveItem>({
-      url: `${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`,
+      url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`,
       method: "POST",
       body: JSON.stringify({ content, description }),
     });
@@ -105,7 +105,7 @@ export const fetchReorderItems = createAsyncThunk(
   async (data: { id: string; child_order: number }[]) => {
     const { request } = useHttp();
     return await request<IArchiveItem>({
-      url: `${process.env.REACT_APP_BASE_URL_SYNC}/sync`,
+      url: `${import.meta.env.VITE_APP_BASE_URL_SYNC}/sync`,
       method: "POST",
       body: JSON.stringify({
         commands: [
