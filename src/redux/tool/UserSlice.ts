@@ -98,8 +98,11 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateUser: (state, action: PayloadAction<typeUser>) => {
-      state.user = action.payload;
+    updateUserValue: (state, action: PayloadAction<Partial<typeUser>>) => {
+      // state.user[keyof typeof action.payload] = action.payload;
+      const objK = Object.keys(action.payload);
+      state.user[objK[0] as keyof typeof state.user] =
+        action.payload[objK[0] as keyof typeof state.user];
     },
   },
   extraReducers: (builder) => {
@@ -146,6 +149,8 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer } = userSlice;
+const { actions, reducer } = userSlice;
 
 export default reducer;
+
+export const { updateUserValue } = actions;

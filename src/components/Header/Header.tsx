@@ -16,7 +16,6 @@ const Header = () => {
     loop: false,
   };
   const { View } = useLottie(options);
-
   return (
     <>
       <header className="header">

@@ -1,16 +1,51 @@
 .userInformation {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   flex-flow: row nowrap;
+  gap: 15px;
+  padding: 15px 30px;
+  width: 400px;
 
+  &-inputs {
+    width: 100%;
+  }
+}
+
+.form-user {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  gap: 20px;
 }
 
 .input-user {
   border: 1px solid #000;
 }
 
-.userAvatar {
+.userAvatar-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+  flex-shrink: 2;
+}
+
+.userAvatarView {
   display: block;
-  width: 150px;
-  height: 150px;
+  width: 80px;
+  height: 80px;
+}
+
+.btn-uploadUserAvatar {
+  padding: 0 12px;
+
+  .title {
+    font-size: 12px;
+  }
+}
+
+.btn-userUpdate {
+  padding: 10px 0;
 }
