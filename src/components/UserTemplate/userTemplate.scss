@@ -10,6 +10,10 @@
   &-inputs {
     width: 100%;
   }
+
+  @media(max-width: 797px) {
+    width: 100%;
+  }
 }
 
 .form-user {
