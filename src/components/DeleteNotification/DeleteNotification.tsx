@@ -34,7 +34,7 @@ const DeleteNotification: React.FC<{
   };
 
   return (
-    <div style={{ width: 375 }}>
+    <div className="editModal">
       <InfoIcon className="icon infoModalIcon" />
       <div className="removeItem">
         <p className="title" style={{ marginTop: 20 }}>
