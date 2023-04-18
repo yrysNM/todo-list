@@ -4,6 +4,7 @@ import { useHttp } from "../../hooks/http.hook";
 
 interface InitialTypeUser {
   sync_token: string;
+  avatar?: File;
   user: {
     email: string;
     full_name: string;
@@ -124,6 +125,9 @@ const userSlice = createSlice({
       state.user[objK[0] as keyof typeof state.user] =
         action.payload[objK[0] as keyof typeof state.user];
     },
+    userAvatarImage: (state, action: PayloadAction<File>) => {
+      state.avatar = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -181,4 +185,4 @@ const { actions, reducer } = userSlice;
 
 export default reducer;
 
-export const { updateUserValue } = actions;
+export const { updateUserValue, userAvatarImage } = actions;

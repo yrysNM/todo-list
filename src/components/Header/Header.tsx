@@ -9,7 +9,7 @@ import "./header.scss";
 import { UserTemplate } from "../UserTemplate";
 
 const Header = () => {
-  const { full_name } = useAppSelector((state) => state.user.user);
+  const { user, avatar } = useAppSelector((state) => state.user);
   const [isOpenUserModal, setIsOpenUserModal] = useState(false);
   const options = {
     animationData: porfileAnimation,
@@ -28,19 +28,23 @@ const Header = () => {
               setIsOpenUserModal(true);
             }}
           >
-            {full_name.length > 5 && window.innerWidth < 575
-              ? `${full_name.slice(0, 5)}...`
-              : full_name}
+            {user.full_name.length > 5 && window.innerWidth < 575
+              ? `${user.full_name.slice(0, 5)}...`
+              : user.full_name}
           </span>
 
           <span
             onClick={() => {
               setIsOpenUserModal(true);
             }}
-            className="icon logOut"
+            className="icon userProfile"
             style={{ cursor: "pointer", marginTop: 5 }}
           >
-            {View}
+            {avatar ? (
+              <img src={URL.createObjectURL(avatar)} alt="avator" />
+            ) : (
+              View
+            )}
           </span>
         </div>
       </header>

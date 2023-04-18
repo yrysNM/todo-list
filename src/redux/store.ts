@@ -6,7 +6,10 @@ import user from "./tool/UserSlice";
 
 const store = configureStore({
   reducer: { items, isCompletedBtn, view, user },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
   devTools: import.meta.env.NODE_ENV !== "production",
 });
 
