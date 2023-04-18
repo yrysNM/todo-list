@@ -46,7 +46,7 @@ const Header = () => {
       </header>
       {isOpenUserModal && (
         <Modal onClose={() => setIsOpenUserModal(false)}>
-          <UserTemplate />
+          <UserTemplate onCloseModal={() => setIsOpenUserModal(false)} />
         </Modal>
       )}
     </>

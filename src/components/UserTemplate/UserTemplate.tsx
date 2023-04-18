@@ -3,16 +3,24 @@ import { useLottie } from "lottie-react";
 
 import { CustomInputLayout } from "../CustomInputLayout";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
-import { typeUser, updateUserValue } from "../../redux/tool/UserSlice";
+import {
+  fetchUpdateUser,
+  typeUser,
+  updateUserValue,
+} from "../../redux/tool/UserSlice";
 import { typeBlur } from "../../../types/customTypes";
 import { CustomButton } from "../CustomButton";
 
 import porfileAnimation from "../../assets/json/profile.json";
 import "./userTemplate.scss";
 
-export const UserTemplate = () => {
+export const UserTemplate = ({
+  onCloseModal,
+}: {
+  onCloseModal: () => void;
+}) => {
   const { user } = useAppSelector((state) => state.user);
-  const [userData, setUserData] = useState<typeUser>();
+  const [userData, setUserData] = useState<Partial<typeUser>>();
   const [isBlur, setIsBlur] = useState<typeBlur>({
     active: false,
     typeInput: "",
@@ -36,9 +44,20 @@ export const UserTemplate = () => {
     );
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(fetchUpdateUser(userData));
+    onCloseModal();
+  };
+
   useEffect(() => {
     if (user.id) {
-      setUserData(user);
+      setUserData({
+        full_name: user.full_name,
+        email: user.email,
+        id: user.id,
+      });
     }
   }, [user]);
 
@@ -55,7 +74,7 @@ export const UserTemplate = () => {
         </CustomButton>
       </div>
       <div className="userInformation-inputs">
-        <form className="form form-user">
+        <form className="form form-user" onSubmit={handleSubmit}>
           <CustomInputLayout
             labelText="Full name"
             htmlFor="full_name"
@@ -95,7 +114,7 @@ export const UserTemplate = () => {
           <CustomButton
             type="submit"
             clazz="btn-form btn-userUpdate"
-            onPressButton={() => console.log("update user")}
+            onPressButton={handleSubmit}
           >
             <span className="title title-addTask">Update</span>
           </CustomButton>
