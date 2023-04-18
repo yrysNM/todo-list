@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 
 interface InitialTypeUser {
+  sync_token: string;
+  avatar?: File;
   user: {
     email: string;
     full_name: string;
@@ -19,6 +21,7 @@ interface IUser extends InitialTypeUser {
 }
 
 const initialState: IUser = {
+  sync_token: "",
   user: {
     full_name: "",
     id: "",
@@ -50,7 +53,7 @@ export const fetchUserLogin = createAsyncThunk(
   "user/fetchUserLogin",
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
-    return await request<typeUser>({
+    return await request<InitialTypeUser>({
       url: `https://todoist.com/API/v9.0/user/login`,
       method: "POST",
       body: JSON.stringify({
@@ -94,6 +97,24 @@ export const fetchRegisterUser = createAsyncThunk(
   }
 );
 
+export const fetchUpdateUser = createAsyncThunk(
+  "user/fetchUpdateUser",
+  async (userData: Partial<typeUser>) => {
+    const { request } = useHttp();
+    return await request<{ sync_stataus: Object }>({
+      url: `${import.meta.env.VITE_APP_BASE_URL_SYNC}/sync`,
+      method: "POST",
+      body: JSON.stringify({
+        type: "user_update",
+        args: userData,
+        uuid: "effefe72-4e3e-4f9a-0b85-ad66abfc283d",
+        // sync_token: JSON.parse(localStorage.getItem("sync_token")),
+        current_password: "admin12@",
+      }),
+    });
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -104,6 +125,9 @@ const userSlice = createSlice({
       state.user[objK[0] as keyof typeof state.user] =
         action.payload[objK[0] as keyof typeof state.user];
     },
+    userAvatarImage: (state, action: PayloadAction<File>) => {
+      state.avatar = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -111,10 +135,14 @@ const userSlice = createSlice({
         state.userLoading = "loading";
       })
       .addCase(fetchUserLogin.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.userLoading = "idle";
 
-        localStorage.setItem("project_id", action.payload.inbox_project_id);
+        localStorage.setItem("sync_token", action.payload.sync_token);
+        localStorage.setItem(
+          "project_id",
+          action.payload.user.inbox_project_id
+        );
       })
       .addCase(fetchUserLogin.rejected, (state) => {
         state.userLoading = "error";
@@ -126,6 +154,10 @@ const userSlice = createSlice({
         state.userLoading = "idle";
         state.user = action.payload.user;
 
+        localStorage.setItem(
+          "sync_token",
+          JSON.stringify(action.payload.sync_token)
+        );
         localStorage.setItem(
           "project_id",
           action.payload.user.inbox_project_id
@@ -153,4 +185,4 @@ const { actions, reducer } = userSlice;
 
 export default reducer;
 
-export const { updateUserValue } = actions;
+export const { updateUserValue, userAvatarImage } = actions;

@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import { useLottie } from "lottie-react";
 
 import { CustomInputLayout } from "../CustomInputLayout";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
-import { typeUser, updateUserValue } from "../../redux/tool/UserSlice";
+import {
+  fetchUpdateUser,
+  typeUser,
+  updateUserValue,
+  userAvatarImage,
+} from "../../redux/tool/UserSlice";
 import { typeBlur } from "../../../types/customTypes";
 import { CustomButton } from "../CustomButton";
 
 import porfileAnimation from "../../assets/json/profile.json";
 import "./userTemplate.scss";
 
-export const UserTemplate = () => {
-  const { user } = useAppSelector((state) => state.user);
-  const [userData, setUserData] = useState<typeUser>();
+export const UserTemplate = ({
+  onCloseModal,
+}: {
+  onCloseModal: () => void;
+}) => {
+  const { user, avatar } = useAppSelector((state) => state.user);
+  const [userData, setUserData] = useState<Partial<typeUser>>();
   const [isBlur, setIsBlur] = useState<typeBlur>({
     active: false,
     typeInput: "",
@@ -22,6 +31,7 @@ export const UserTemplate = () => {
     animationData: porfileAnimation,
     loop: false,
   };
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { View } = useLottie(options);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -36,26 +46,63 @@ export const UserTemplate = () => {
     );
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(fetchUpdateUser(userData));
+    onCloseModal();
+  };
+
+  const uploadImgChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+
+    const currentFile = e.target.files[0];
+    dispatch(userAvatarImage(currentFile));
+  };
+
+  function handleImgUploadClick() {
+    inputRef.current?.click();
+  }
+
   useEffect(() => {
     if (user.id) {
-      setUserData(user);
+      setUserData({
+        full_name: user.full_name,
+        email: user.email,
+        id: user.id,
+      });
     }
   }, [user]);
 
   return (
     <div className="userInformation">
       <div className="userAvatar-block">
-        <span className="userAvatarView">{View}</span>
+        <span className="userAvatarView">
+          {avatar ? (
+            <img src={URL.createObjectURL(avatar)} alt="avator" />
+          ) : (
+            View
+          )}
+        </span>
         <CustomButton
           clazz="btn-uploadUserAvatar"
           type="button"
-          onPressButton={() => console.log("upload image")}
+          onPressButton={() => handleImgUploadClick()}
         >
           <p className="title">Upload image</p>
+
+          <input
+            type="file"
+            ref={inputRef}
+            style={{ display: "none" }}
+            onChange={uploadImgChange}
+          />
         </CustomButton>
       </div>
       <div className="userInformation-inputs">
-        <form className="form form-user">
+        <form className="form form-user" onSubmit={handleSubmit}>
           <CustomInputLayout
             labelText="Full name"
             htmlFor="full_name"
@@ -95,7 +142,7 @@ export const UserTemplate = () => {
           <CustomButton
             type="submit"
             clazz="btn-form btn-userUpdate"
-            onPressButton={() => console.log("update user")}
+            onPressButton={handleSubmit}
           >
             <span className="title title-addTask">Update</span>
           </CustomButton>
