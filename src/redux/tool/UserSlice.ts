@@ -53,7 +53,7 @@ export const fetchUserLogin = createAsyncThunk(
   "user/fetchUserLogin",
   async (valueUser: valueUserType) => {
     const { request } = useHttp();
-    return await request<InitialTypeUser>({
+    return await request<typeUser>({
       url: `https://todoist.com/API/v9.0/user/login`,
       method: "POST",
       body: JSON.stringify({
@@ -135,14 +135,10 @@ const userSlice = createSlice({
         state.userLoading = "loading";
       })
       .addCase(fetchUserLogin.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.userLoading = "idle";
 
-        localStorage.setItem("sync_token", action.payload.sync_token);
-        localStorage.setItem(
-          "project_id",
-          action.payload.user.inbox_project_id
-        );
+        localStorage.setItem("project_id", action.payload.inbox_project_id);
       })
       .addCase(fetchUserLogin.rejected, (state) => {
         state.userLoading = "error";
@@ -154,10 +150,10 @@ const userSlice = createSlice({
         state.userLoading = "idle";
         state.user = action.payload.user;
 
-        localStorage.setItem(
-          "sync_token",
-          JSON.stringify(action.payload.sync_token)
-        );
+        // localStorage.setItem(
+        //   "sync_token",
+        //   JSON.stringify(action.payload.sync_token)
+        // );
         localStorage.setItem(
           "project_id",
           action.payload.user.inbox_project_id

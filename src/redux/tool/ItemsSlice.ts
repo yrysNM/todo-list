@@ -35,8 +35,8 @@ export const fetchCompletedItems = createAsyncThunk(
     const response = await fetch(
       `${
         import.meta.env.VITE_APP_BASE_URL_SYNC
-      }/archive/items?project_id=${JSON.parse(
-        localStorage.getItem("project_id")
+      }/archive/items?project_id=${localStorage.getItem(
+        "project_id"
       )}&limit=20`,
       {
         method: "GET",
