@@ -10,7 +10,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: import.meta.env.NODE_ENV !== "production",
+  devTools: import.meta.env.DEV === true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
