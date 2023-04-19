@@ -24,7 +24,7 @@ const DeleteNotification: React.FC<{
       )
     );
     onCancelButton(false);
-    await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`, {
+    await fetch(`${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
