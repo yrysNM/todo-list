@@ -24,7 +24,7 @@ const DeleteNotification: React.FC<{
       )
     );
     onCancelButton(false);
-    await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${task_id}`, {
+    await fetch(`${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
@@ -34,7 +34,7 @@ const DeleteNotification: React.FC<{
   };
 
   return (
-    <>
+    <div className="editModal">
       <InfoIcon className="icon infoModalIcon" />
       <div className="removeItem">
         <p className="title" style={{ marginTop: 20 }}>
@@ -59,7 +59,7 @@ const DeleteNotification: React.FC<{
           </CustomButton>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

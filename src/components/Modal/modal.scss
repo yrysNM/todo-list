@@ -4,8 +4,8 @@
 }
 
 .popup {
-  max-width: 375px;
-  width: 100%;
+  // max-width: 375px;
+  width: auto;
   padding: 10px;
   position: relative;
   background-color: #FFF;
@@ -42,6 +42,18 @@
   }
 }
 
+.editModal {
+  width: 375px;
+
+  @media(max-width: 575px) {
+    width: 280px;
+  }
+
+  @media(max-width: 330px) {
+    width: 100%;
+  }
+}
+
 
 .hamburger {
   display: block;
@@ -57,8 +69,6 @@
     transition: all .5s;
 
   }
-
-
 
   &_active {
     span {

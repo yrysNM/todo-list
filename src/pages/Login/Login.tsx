@@ -11,7 +11,9 @@ import { ErrorMessage } from "../../components/ErrorMessage";
 
 import TodoImg from "../../assets/img/todoImg.png";
 
-type tLogin = { token: string };
+type tLogin = {
+  token: string;
+};
 
 const Login = () => {
   const { setToken } = useToken();

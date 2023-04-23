@@ -9,6 +9,7 @@ import {
 } from "../../redux/tool/ItemsSlice";
 import { toggleCompleteBtn } from "../../redux/tool/isCompletedBtnSlice";
 import { IViewComponent } from "../../Interfaces";
+import { useToken } from "../../hooks/token.hook";
 
 import { ReactComponent as CompletedIcon } from "../../assets/icons/completed.svg";
 
@@ -24,6 +25,7 @@ export const ItemInfo = ({
     (state) => state.items
   );
   const { valBtn } = useAppSelector((state) => state.isCompletedBtn);
+  const { token } = useToken();
   const dispatch = useAppDispatch();
 
   /**
@@ -42,11 +44,11 @@ export const ItemInfo = ({
       const getCompltedItem = items.filter((item) => item.id === id)[0];
       dispatch(toggleComplteItems({ isItem: false, data: getCompltedItem }));
 
-      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/close`, {
+      await fetch(`${import.meta.env.VITE_APP_BASE_URL}/tasks/${id}/close`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+          Authorization: "Bearer " + token,
         },
       });
     } else {
@@ -63,10 +65,10 @@ export const ItemInfo = ({
         })
       );
 
-      await fetch(`${process.env.REACT_APP_BASE_URL}/tasks/${id}/reopen`, {
+      await fetch(`${import.meta.env.VITE_APP_BASE_URL}/tasks/${id}/reopen`, {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
       });

@@ -59,11 +59,13 @@ export const ItemBtns = ({
       </div>
       {isOpenEdit && (
         <Modal onClose={() => setIsOpenEdit(false)}>
-          <AddTaskForm
-            setIsAddTask={(value) => setIsOpenEdit(value)}
-            isUpdateItem={true}
-            task_id={task_id}
-          />
+          <div className="editModal">
+            <AddTaskForm
+              setIsAddTask={(value) => setIsOpenEdit(value)}
+              isUpdateItem={true}
+              task_id={task_id}
+            />
+          </div>
         </Modal>
       )}
 

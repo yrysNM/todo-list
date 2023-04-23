@@ -6,8 +6,11 @@ import user from "./tool/UserSlice";
 
 const store = configureStore({
   reducer: { items, isCompletedBtn, view, user },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-  devTools: import.meta.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+  devTools: import.meta.env.DEV === true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
