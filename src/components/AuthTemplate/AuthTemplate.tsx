@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -190,38 +190,27 @@ export const AuthTemplate = ({ isLogin, getValueInput }: IAuthTemplate) => {
 };
 
 const BottomTexts: React.FC<{ isLogin: boolean }> = ({ isLogin }) => {
-  const navigate = useNavigate();
-
   return (
     <div className="bottomTexts">
       {isLogin && (
-        <span
-          className="sub-title navigateSpan"
-          onClick={() => navigate("/notReady", { replace: true })}
-        >
-          Forgot your password?
-        </span>
+        <Link to={"/notReady"}>
+          <span className="sub-title navigateSpan">Forgot your password?</span>
+        </Link>
       )}
 
       {isLogin ? (
         <p className="textSignUpIn">
           Don't have an account yet?{" "}
-          <span
-            className="navigateSpan"
-            onClick={() => navigate("/register", { replace: true })}
-          >
-            Sign up
-          </span>
+          <Link to={"/register"}>
+            <span className="navigateSpan">Sign up</span>
+          </Link>
         </p>
       ) : (
         <p className="textSignUpIn">
           Already have an account?{" "}
-          <span
-            className="navigateSpan"
-            onClick={() => navigate("/login", { replace: true })}
-          >
-            Then sign in
-          </span>
+          <Link to={"/login"}>
+            <span className="navigateSpan">Then sign in</span>
+          </Link>
         </p>
       )}
     </div>
