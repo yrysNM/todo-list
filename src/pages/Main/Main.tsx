@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 import { DefaultPage } from "..";
 import { AddTask } from "../../components/AddTask";
@@ -13,11 +13,19 @@ import { fetchInitialUser } from "../../redux/tool/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hook";
 import { fetchCompletedItems, fetchItems } from "../../redux/tool/ItemsSlice";
 import { Logout } from "../../components/Logout";
+import { useGetItemsQuery } from "../../api/apiSlice";
 
 const Main = () => {
   const { items, completedItems } = useAppSelector((state) => state.items);
   const { id } = useAppSelector((state) => state.user.user);
-
+  // const {
+  //   data: itemsList,
+  //   isFetching,
+  //   isLoading,
+  //   isSuccess,
+  //   isError,
+  //   error,
+  // } = useGetItemsQuery("");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -54,11 +62,14 @@ const InitialComponent = ({ children }: IGeneralChildren) => {
   const { userLoading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     dispatch(fetchItems());
     dispatch(fetchCompletedItems());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localStorage.getItem("project_id")]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   switch (userLoading) {
     case "loading":

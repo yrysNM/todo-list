@@ -150,10 +150,6 @@ const userSlice = createSlice({
         state.userLoading = "idle";
         state.user = action.payload.user;
 
-        // localStorage.setItem(
-        //   "sync_token",
-        //   JSON.stringify(action.payload.sync_token)
-        // );
         localStorage.setItem(
           "project_id",
           action.payload.user.inbox_project_id
