@@ -19,6 +19,7 @@ interface InitialTypeUser {
 
 interface IUser extends InitialTypeUser {
   userLoading: 'idle' | 'loading' | 'error';
+  errorText: string;
 }
 
 const initialState: IUser = {
@@ -33,6 +34,7 @@ const initialState: IUser = {
     inbox_project_id: '',
   },
   userLoading: 'idle',
+  errorText: '',
 };
 
 export type typeUser = {
@@ -141,8 +143,9 @@ const userSlice = createSlice({
 
         setItem('project_id', action.payload.inbox_project_id);
       })
-      .addCase(fetchUserLogin.rejected, (state) => {
+      .addCase(fetchUserLogin.rejected, (state, action) => {
         state.userLoading = 'error';
+        state.errorText = action.error.message;
       })
       .addCase(fetchInitialUser.pending, (state) => {
         state.userLoading = 'loading';
@@ -153,8 +156,9 @@ const userSlice = createSlice({
 
         setItem('project_id', action.payload.user.inbox_project_id);
       })
-      .addCase(fetchInitialUser.rejected, (state) => {
+      .addCase(fetchInitialUser.rejected, (state, action) => {
         state.userLoading = 'error';
+        state.errorText = action.error.message;
       })
       .addCase(fetchRegisterUser.pending, (state) => {
         state.userLoading = 'loading';
@@ -165,8 +169,9 @@ const userSlice = createSlice({
 
         setItem('project_id', action.payload.inbox_project_id);
       })
-      .addCase(fetchRegisterUser.rejected, (state) => {
+      .addCase(fetchRegisterUser.rejected, (state, action) => {
         state.userLoading = 'error';
+        state.errorText = action.error.message;
       });
   },
 });

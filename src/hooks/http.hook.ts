@@ -1,9 +1,9 @@
-import { IHeaders } from "../Interfaces";
-import { getItem } from "../utils/PresistanceStorage";
+import {IHeaders} from '../Interfaces';
+import {getItem} from '../utils/PresistanceStorage';
 
 interface IRequest extends IHeaders {
   url: string;
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: string;
 }
 
@@ -24,12 +24,12 @@ export const useHttp = () => {
     method,
     body = null,
     headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ` + getItem<string>("token"),
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ` + getItem<string>('token'),
     },
   }: IRequest): Promise<T> => {
     try {
-      const response = await fetch(url, { method, body, headers });
+      const response = await fetch(url, {method, body, headers});
 
       if (!response.ok) {
         throw new Error(`Could not fetch ${url}, status: ${response.status}`);

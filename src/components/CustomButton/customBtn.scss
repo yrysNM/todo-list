@@ -5,11 +5,19 @@
   border-radius: 3px;
   cursor: pointer;
   color: #838080;
+  transition: outline .3s ease, box-shadow .3s ease;
 
   &:hover {
     transition: background .4s ease, color .5 ease;
     background: #EEE;
     color: #2C2C2C;
+  }
+
+  &:focus {
+    transition: outline .3s ease, box-shadow .3s ease;
+    outline: 1px solid #e45768;
+    box-shadow: 0px 0px 5px #000;
+    ;
   }
 
   &-headToday {
