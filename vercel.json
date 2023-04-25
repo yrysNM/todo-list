@@ -2,10 +2,11 @@
   "git": {
     "deploymentEnabled": {
       "main": true,
-      "change/view": false, 
-      "change/userProfile": false,
-      "page/404": false,
-      "dev": false
+      "dev/front-end": false, 
+      "dev/back-end": false
     }
-  }
+  },
+  "rewrites":  [
+    {"source": "/(.*)", "destination": "/"}
+ ]
 }
