@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction, createAsyncThunk} from '@reduxjs/toolkit';
 
-import { getItem } from "../../utils/PresistanceStorage";
-import { useHttp } from "../../hooks/http.hook";
-import type { RootState } from "../store";
+import {getItem} from '../../utils/PresistanceStorage';
+import {useHttp} from '../../hooks/http.hook';
+import type {RootState} from '../store';
 import {
   IArchiveCompleted,
   IArchiveItem,
   ITodoistMethod,
-} from "../../Interfaces";
+} from '../../Interfaces';
 
 interface IItems {
   searchValue: string;
@@ -18,7 +18,7 @@ interface IItems {
 }
 
 const initialState: IItems = {
-  searchValue: "",
+  searchValue: '',
   items: [],
   searchItems: [],
   completedItems: {
@@ -31,18 +31,16 @@ const initialState: IItems = {
 };
 
 export const fetchCompletedItems = createAsyncThunk(
-  "items/fetchCompletedItems",
+  'items/fetchCompletedItems',
   async () => {
     const response = await fetch(
       `${
         import.meta.env.VITE_APP_BASE_URL_SYNC
-      }/archive/items?project_id=${localStorage.getItem(
-        "project_id"
-      )}&limit=20`,
+      }/archive/items?project_id=${getItem('project_id')}&limit=20`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          Authorization: "Bearer " + getItem<string>("token"),
+          Authorization: 'Bearer ' + getItem<string>('token'),
         },
       }
     );
@@ -51,32 +49,32 @@ export const fetchCompletedItems = createAsyncThunk(
   }
 );
 
-export const fetchItems = createAsyncThunk("items/fetchItems", async () => {
-  const { request } = useHttp();
+export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
+  const {request} = useHttp();
   return await request<IArchiveItem[]>({
     url: `${import.meta.env.VITE_APP_BASE_URL}/tasks`,
-    method: "GET",
+    method: 'GET',
   });
 });
 
 export const fetchItem = createAsyncThunk(
-  "items/fetchItem",
+  'items/fetchItem',
   async (task_id: string) => {
-    const { request } = useHttp();
+    const {request} = useHttp();
     return await request<IArchiveItem>({
       url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`,
-      method: "GET",
+      method: 'GET',
     });
   }
 );
 
 export const fetchAddItem = createAsyncThunk(
-  "item/fetchAddItem",
-  async ({ content, description, due_lang }: ITodoistMethod) => {
-    const { request } = useHttp();
+  'item/fetchAddItem',
+  async ({content, description, due_lang}: ITodoistMethod) => {
+    const {request} = useHttp();
     return await request<IArchiveItem>({
       url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/`,
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         content,
         description,
@@ -87,13 +85,13 @@ export const fetchAddItem = createAsyncThunk(
 );
 
 export const fetchUpdateItem = createAsyncThunk(
-  "item/fetchUpdateItem",
-  async ({ task_id, content, description }: ITodoistMethod) => {
-    const { request } = useHttp();
+  'item/fetchUpdateItem',
+  async ({task_id, content, description}: ITodoistMethod) => {
+    const {request} = useHttp();
     return await request<IArchiveItem>({
       url: `${import.meta.env.VITE_APP_BASE_URL}/tasks/${task_id}`,
-      method: "POST",
-      body: JSON.stringify({ content, description }),
+      method: 'POST',
+      body: JSON.stringify({content, description}),
     });
   }
 );
@@ -102,17 +100,17 @@ export const fetchUpdateItem = createAsyncThunk(
  * items change
  */
 export const fetchReorderItems = createAsyncThunk(
-  "items/fetchReorderItems",
-  async (data: { id: string; child_order: number }[]) => {
-    const { request } = useHttp();
+  'items/fetchReorderItems',
+  async (data: {id: string; child_order: number}[]) => {
+    const {request} = useHttp();
     return await request<IArchiveItem>({
       url: `${import.meta.env.VITE_APP_BASE_URL_SYNC}/sync`,
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         commands: [
           {
-            type: "item_reorder",
-            uuid: "9247faf3-d83a-9d8c-2773-b5054e3ee20b",
+            type: 'item_reorder',
+            uuid: '9247faf3-d83a-9d8c-2773-b5054e3ee20b',
             args: {
               items: data,
             },
@@ -124,7 +122,7 @@ export const fetchReorderItems = createAsyncThunk(
 );
 
 const itemsSlice = createSlice({
-  name: "items",
+  name: 'items',
   initialState,
   reducers: {
     setItems: (state, action: PayloadAction<IArchiveItem[]>) => {
@@ -142,13 +140,13 @@ const itemsSlice = createSlice({
     },
     updateItems: (
       state,
-      action: PayloadAction<{ id: string; is_completed: boolean }>
+      action: PayloadAction<{id: string; is_completed: boolean}>
     ) => {
       const updateItems = state.items.map((item) => {
         if (item.id === action.payload.id) {
           item.is_completed = action.payload.is_completed;
 
-          return { ...item };
+          return {...item};
         }
 
         return item;
@@ -161,7 +159,7 @@ const itemsSlice = createSlice({
     },
     toggleComplteItems: (
       state,
-      action: PayloadAction<{ isItem: boolean; data: IArchiveItem }>
+      action: PayloadAction<{isItem: boolean; data: IArchiveItem}>
     ) => {
       if (action.payload.isItem) {
         state.items.push(action.payload.data);
@@ -190,7 +188,7 @@ const itemsSlice = createSlice({
             if (item.id === action.payload.id) {
               item.content = action.payload.content;
               item.description = action.payload.description;
-              return { ...item };
+              return {...item};
             }
             return item;
           });
@@ -205,7 +203,7 @@ const itemsSlice = createSlice({
               if (item.id === action.payload.id) {
                 item.content = action.payload.content;
                 item.description = action.payload.description;
-                return { ...item };
+                return {...item};
               }
               return item;
             }
@@ -216,7 +214,7 @@ const itemsSlice = createSlice({
   },
 });
 
-const { actions, reducer } = itemsSlice;
+const {actions, reducer} = itemsSlice;
 
 export default reducer;
 
