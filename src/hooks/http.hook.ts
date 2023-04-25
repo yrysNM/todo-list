@@ -1,4 +1,5 @@
 import { IHeaders } from "../Interfaces";
+import { getItem } from "../utils/PresistanceStorage";
 
 interface IRequest extends IHeaders {
   url: string;
@@ -24,7 +25,7 @@ export const useHttp = () => {
     body = null,
     headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+      Authorization: `Bearer ` + getItem<string>("token"),
     },
   }: IRequest): Promise<T> => {
     try {

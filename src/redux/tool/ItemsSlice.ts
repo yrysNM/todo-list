@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
+import { getItem } from "../../utils/PresistanceStorage";
 import { useHttp } from "../../hooks/http.hook";
 import type { RootState } from "../store";
 import {
@@ -41,7 +42,7 @@ export const fetchCompletedItems = createAsyncThunk(
       {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + JSON.parse(localStorage.getItem("token")),
+          Authorization: "Bearer " + getItem<string>("token"),
         },
       }
     );

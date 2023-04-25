@@ -11,7 +11,7 @@ export const useToken = () => {
   const [token, setToken] = useState(getToken());
 
   const saveToken = (userToken: string) => {
-    setItem<string>("token", JSON.stringify(userToken));
+    setItem<string>("token", userToken);
 
     setToken(userToken);
   };
