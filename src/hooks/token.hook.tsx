@@ -1,17 +1,17 @@
 import { useState } from "react";
+import { setItem, getItem } from "../utils/PresistanceStorage";
 
 export const useToken = () => {
   const getToken = () => {
-    const tokenString = localStorage.getItem("token");
-    const userToken: string = JSON.parse(tokenString);
+    const tokenString = getItem<string>("token");
 
-    return userToken;
+    return tokenString;
   };
 
   const [token, setToken] = useState(getToken());
 
   const saveToken = (userToken: string) => {
-    localStorage.setItem("token", JSON.stringify(userToken));
+    setItem<string>("token", userToken);
 
     setToken(userToken);
   };
