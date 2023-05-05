@@ -10,6 +10,9 @@ It is for practicing typescript language and react.ts but with an awesome layout
 
 **Server:** API(todoist.com)
 
+**Preview**
+![alt text](https://github.com/yrysNM/todo-list/blob/main/public/2.jpg?raw=true)
+
 ## License
 
 MIT
