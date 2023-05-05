@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 
-import { useAppSelector, useAppDispatch } from "../../hooks/redux.hook";
-import { useAutoSizeTextArea } from "../../hooks/textarea.hook";
-import { fetchAddItem, fetchUpdateItem } from "../../redux/tool/ItemsSlice";
-import { CustomButton } from "../CustomButton";
+import {useAppSelector, useAppDispatch} from '../../hooks/redux.hook';
+import {useAutoSizeTextArea} from '../../hooks/textarea.hook';
+import {fetchAddItem, fetchUpdateItem} from '../../redux/tool/ItemsSlice';
+import {CustomButton} from '../CustomButton';
 
-import "./addTaskForm.scss";
+import './addTaskForm.scss';
 
 export const AddTaskForm: React.FC<{
   setIsAddTask: (value: boolean) => void;
   isUpdateItem: boolean;
   task_id?: string;
-}> = ({ setIsAddTask, isUpdateItem, task_id }) => {
-  const [taskName, setTaskName] = useState<string>("");
-  const [descript, setDescript] = useState<string>("");
+}> = ({setIsAddTask, isUpdateItem, task_id}) => {
+  const [taskName, setTaskName] = useState<string>('');
+  const [descript, setDescript] = useState<string>('');
   const textAreaInput = useRef<HTMLTextAreaElement>(null);
   const [isBlur, setIsBlur] = useState(false);
-  const { editItem } = useAppSelector((state) => state.items);
+  const {editItem} = useAppSelector((state) => state.items);
   const dispatch = useAppDispatch();
 
   const handleClickAdd = (
@@ -30,12 +30,12 @@ export const AddTaskForm: React.FC<{
       fetchAddItem({
         content: taskName,
         description: descript,
-        due_lang: "en",
+        due_lang: 'en',
       })
     );
 
-    setTaskName("");
-    setDescript("");
+    setTaskName('');
+    setDescript('');
   };
 
   const handleClickUpdate = (
@@ -69,7 +69,7 @@ export const AddTaskForm: React.FC<{
   return (
     <div className="addTaskForm">
       <form
-        className={`form form-add ${isBlur ? "blur" : ""}`}
+        className={`form form-add ${isBlur ? 'blur' : ''}`}
         onSubmit={isUpdateItem ? handleClickUpdate : handleClickAdd}
       >
         <div className="form-block">
@@ -77,7 +77,7 @@ export const AddTaskForm: React.FC<{
             type="text"
             name="task_name"
             className="input inputName"
-            value={taskName || ""}
+            value={taskName || ''}
             onFocus={() => setIsBlur(true)}
             onBlur={() => setIsBlur(false)}
             placeholder="Task name"
@@ -87,7 +87,7 @@ export const AddTaskForm: React.FC<{
             ref={textAreaInput}
             name="description_taks"
             className="textarea input inputDescr"
-            value={descript || ""}
+            value={descript || ''}
             onChange={(e) => {
               setDescript(e.target.value);
             }}
@@ -114,7 +114,7 @@ export const AddTaskForm: React.FC<{
             }
           >
             <span className="title title-addTask">
-              {isUpdateItem ? "Save" : "Add task"}
+              {isUpdateItem ? 'Save' : 'Add task'}
             </span>
           </CustomButton>
         </div>
